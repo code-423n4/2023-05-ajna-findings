@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "volodya",
+  "risk": "2",
+  "title": "Users will lose their funds if they provide same buckets inside moveStakedLiquidity",
+  "issueId": 21,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/21"
+}
