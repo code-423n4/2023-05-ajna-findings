@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "troublor",
+  "risk": "2",
+  "title": "Same from/to bucket indices will result in corrupted stake snapshot in moveStakedLiquidity function",
+  "issueId": 28,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/28"
+}
