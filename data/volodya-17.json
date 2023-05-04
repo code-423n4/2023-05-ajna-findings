@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "volodya",
+  "risk": "3",
+  "title": "User can avoid bankruptcy for his position inside PositionManager",
+  "issueId": 17,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/17"
+}
