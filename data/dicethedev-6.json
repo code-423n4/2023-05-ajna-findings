@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "dicethedev",
+  "risk": "2",
+  "title": "lacking access control in GrantFund Contract",
+  "issueId": 6,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/6"
+}
