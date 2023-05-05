@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "nobody2018",
+  "risk": "2",
+  "title": "When _fundedExtraordinaryProposals.length is bigger than 10, ExtraordinaryFunding.proposeExtraordinary will not succeed",
+  "issueId": 38,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/38"
+}
