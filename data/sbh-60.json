@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "2",
+  "title": "Lack of Access Control  can lead to unauthorized access to sensitive information, manipulation of the contract state, and theft of funds in IGrantFund.sol",
+  "issueId": 60,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/60"
+}
