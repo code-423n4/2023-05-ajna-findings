@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "3",
+  "title": "Integer overflow could lead to the incorrect allocation of funds or to manipulate the voting process in IStandardFunding.sol",
+  "issueId": 63,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/63"
+}
