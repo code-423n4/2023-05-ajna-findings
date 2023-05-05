@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "nobody2018",
+  "risk": "3",
+  "title": "StandardFunding._updateTreasury did not deduct rewards for distributing to  voting users",
+  "issueId": 39,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/39"
+}
