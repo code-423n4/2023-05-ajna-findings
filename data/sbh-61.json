@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "2",
+  "title": " Unclear logic in the state function is that it may lead to incorrect state reporting, which could result in the approval or rejection of a proposal based on incorrect information- in IGrantFund.sol",
+  "issueId": 61,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/61"
+}
