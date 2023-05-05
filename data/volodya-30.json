@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "volodya",
+  "risk": "2",
+  "title": "Find the status of a given proposal returns incorrect status for some extraordinary proposals",
+  "issueId": 30,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/30"
+}
