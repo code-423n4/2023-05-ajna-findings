@@ -39,7 +39,7 @@
 
 ##
 
-## [G-] Using bools for storage incurs overhead
+## [G-1] Using bools for storage incurs overhead
 
 > Instances(3) 
 
@@ -80,587 +80,260 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-] 
+## [G-2] Structs can be packed into fewer storage slots
 
+Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
+Subsequent reads as well as writes have smaller gas savings.
 
-## [G-1] Use uint256(1)/uint256(2) instead for true and false boolean states
-
-> Instances (7)
-
-> Approximate gas saved (140K gas)
-
-If you don't use boolean for storage you will avoid Gwarmaccess 100 gas. In addition, state changes of boolean from true to false can cost up to ~20000 gas rather than uint256(2) to uint256(1) that would cost significantly less.
-
-The remix [test results](https://gist.github.com/sathishpic22/bd50ff58acca15c7d8c0270a28afd021) are clearly proves if we use uint256(1)/uint256(2) instead of true false can save 20k gas
+The uint128 data type represents an unsigned integer that is 128 bits long, which allows it to represent values up to 2^128 - 1. This provides a very large range of possible values, which may be sufficient for representing timestamps or other values related to time in many applications.
 
 ```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
+
+The MoveLiquidityLocalVars struct can be packed into one slot less slot as suggested below.
+
+/// @audit Variable ordering with 7 slots instead of the current 8:
+  78:       struct MoveLiquidityLocalVars {
+  79:         uint256 bucketLP;         
+  80:         uint256 bucketCollateral; 
+- 81:         uint256 bankruptcyTime; 
++ 81:         uint128 bankruptcyTime; 
++ 83:         uint128 depositTime;   
+  82:         uint256 bucketDeposit;   
+- 83:         uint256 depositTime;      
+  84:         uint256 maxQuote;         
+  85:         uint256 lpbAmountFrom;    
+  86:         uint256 lpbAmountTo;      
+  87:     }
 
 ```
-
-```solidity
-
-```
-
-```solidity
-
-```##
-
-## [G-2] Using storage instead of memory for structs/arrays saves gas
-
-> Instances(11)
-
-> Approximate gas saved: 23000 gas
-
-When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-200: IStrategy[] memory strategies = new IStrategy[](1);
-202: uint256[] memory shareAmounts = new uint256[](1);
-859: uint256[] memory shares = new uint256[](strategiesLength);
-390: WithdrawerAndNonce memory withdrawerAndNonce = WithdrawerAndNonce({
-                withdrawer: withdrawer,
-                nonce: nonce
-            });
-
-```
-[StrategyManager.sol#L200](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L200)
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/BeaconChainProofs.sol
-
-131: bytes32[] memory paddedHeaderFields = new bytes32[](2**BEACON_BLOCK_HEADER_FIELD_TREE_HEIGHT);
-141: bytes32[] memory paddedBeaconStateFields = new bytes32[](2**BEACON_STATE_FIELD_TREE_HEIGHT);
-151: bytes32[] memory paddedValidatorFields = new bytes32[](2**VALIDATOR_FIELD_TREE_HEIGHT);
-161: bytes32[] memory paddedEth1DataFields = new bytes32[](2**ETH1_DATA_FIELD_TREE_HEIGHT);
-
-```
-[BeaconChainProofs.sol#L131](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L131)
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-62: DelayedWithdrawal memory delayedWithdrawal = DelayedWithdrawal({
-                amount: withdrawalAmount,
-                blockCreated: uint32(block.number)
-            });
-
-114: DelayedWithdrawal[] memory claimableDelayedWithdrawals = new DelayedWithdrawal[](claimableDelayedWithdrawalsLength);
-
-144: DelayedWithdrawal memory delayedWithdrawal = _userWithdrawals[recipient].delayedWithdrawals[delayedWithdrawalsCompletedBefore + i];
-
-```
-[DelayedWithdrawalRouter.sol#L62-L65](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L62-L65)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L78-L87
 
 ##
 
 ## [G-3] For events use 3 indexed rule to save gas
 
-> Instances(18)
+> Instances(5)
 
 Need to declare 3 indexed fields for event parameters. If the event parameter is less than 3 should declare all event parameters indexed
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/interfaces/IGrantFund.sol
 
-54: event Deposit(
-        address depositor, IERC20 token, IStrategy strategy, uint256 shares
+24: event FundTreasury(uint256 amount, uint256 treasuryBalance);
+
+```
+[IGrantFund.sol#L24](https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/interfaces/IGrantFund.sol#L24)
+
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/interfaces/IFunding.sol
+
+event ProposalCreated(
+        uint256 proposalId,
+        address proposer,
+        address[] targets,
+        uint256[] values,
+        string[] signatures,
+        bytes[] calldatas,
+        uint256 startBlock,
+        uint256 endBlock,
+        string description
     );
 
-65: event ShareWithdrawalQueued(
-        address depositor, uint96 nonce, IStrategy strategy, uint256 shares
+69: event VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 weight, string reason);
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/interfaces/IFunding.sol#L54-L64
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/interfaces/IStandardFunding.sol
+
+85: event QuarterlyDistributionStarted(
+        uint256 indexed distributionId,
+        uint256 startBlock,
+        uint256 endBlock
     );
 
-77: event WithdrawalQueued(
-        address depositor, uint96 nonce, address withdrawer, address delegatedAddress, bytes32 withdrawalRoot
+97: event DelegateRewardClaimed(
+        address indexed delegateeAddress,
+        uint256 indexed distributionId,
+        uint256 rewardClaimed
     );
 
-82: event WithdrawalCompleted(address indexed depositor, uint96 nonce, address indexed withdrawer, bytes32 withdrawalRoot);
-
-85: event StrategyWhitelisterChanged(address previousAddress, address newAddress);
-
-88: event StrategyAddedToDepositWhitelist(IStrategy strategy);
-
-91: event StrategyRemovedFromDepositWhitelist(IStrategy strategy);
-
-94: event WithdrawalDelayBlocksSet(uint256 previousValue, uint256 newValue);
-
 ```
-[StrategyManager.sol#L65-L67](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L65-L67)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-82:  event EigenPodStaked(bytes pubkey);
-85:  event ValidatorRestaked(uint40 validatorIndex);
-88:  event ValidatorOvercommitted(uint40 validatorIndex);
-91:  event FullWithdrawalRedeemed(uint40 validatorIndex, address indexed recipient, uint64 withdrawalAmountGwei);
-94:  event PartialWithdrawalRedeemed(uint40 validatorIndex, address indexed recipient, uint64 partialWithdrawalAmountGwei);
-97:  event RestakedBeaconChainETHWithdrawn(address indexed recipient, uint256 amount);
-
-```
-[EigenPod.sol#L82](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L82)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-13: event WithdrawalDelayBlocksSet(uint256 previousValue, uint256 newValue);
-33: event DelayedWithdrawalCreated(address podOwner, address recipient, uint256 amount, uint256 index);
-36: event DelayedWithdrawalsClaimed(address recipient, uint256 amountClaimed, uint256 delayedWithdrawalsCompleted);
-
-```
-[DelayedWithdrawalRouter.sol#L13](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L13)
-
-##
-
-## [G-4] Lack of input value checks cause a redeployment if any human/accidental errors
-
-> Instances(3)
-
-Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables.
-
-If any human/accidental errors happen need to redeploy the contract so this create the huge gas lose
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-46: constructor(IStrategyManager _strategyManager) {
-        strategyManager = _strategyManager;
-        _disableInitializers();
-    }
-
-57:  underlyingToken = _underlyingToken;
-
-```
-[StrategyBase.sol#L46-L49](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L46-L49)
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-77: ethPOS = _ethPOS;
-78: eigenPodBeacon = _eigenPodBeacon;
-79: strategyManager = _strategyManager;
-80: slasher = _slasher;
-
-```
-[EigenPodManager.sol#L77-L80](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L77-L80)
-
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/interfaces/IStandardFunding.sol#L85-L89
 
 ##
 
 ## [G-5] Use nested if and, avoid multiple check combinations
 
-> Instances(2)
+> Instances(6)
 
-> Approximate gas saved : 18 gas 
+> Approximate gas saved : 54 gas 
 
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
 
 As per Solidity [reports](https://gist.github.com/sathishpic22/fe96671bafb22ceaace7fc05a66bd115) possible to save 9 gas
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-422: if (undelegateIfPossible && stakerStrategyList[msg.sender].length == 0) {
-562: if (indicesToSkipIndex < indicesToSkip.length && indicesToSkip[indicesToSkipIndex] == i) {
+570: if (validateEpoch_ && epochToClaim_ > IPool(ajnaPool_).currentBurnEpoch()) revert EpochNotAvailable();
+789: if (prevBucketExchangeRate != 0 && prevBucketExchangeRate < curBucketExchangeRate) {
 
 ```
-[StrategyManager.sol#L422](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L422)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L570
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+129: if (currentDistributionId > 0 && (block.number >_getChallengeStageEndBlock(currentDistributionEndBlock))) {
+135: if (currentDistributionId > 1 && !_isSurplusFundsUpdated[currentDistributionId - 1]) {
+641: if (support == 0 && existingVote.votesUsed > 0 || support == 1 && existingVote.votesUsed < 0) {
+719: if (screenedProposalsLength < 10 && indexInArray == -1) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L129
+
 
 
 ##
 
 ## [G-6] Unnecessary look up in if condition
 
-> Instances(3)
+> Instances(10)
 
 If the || condition isn’t required, the second condition will have been looked up unnecessarily.
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
 
-761: require(queuedWithdrawal.withdrawalStartBlock + withdrawalDelayBlocks <= block.number
-                || queuedWithdrawal.strategies[0] == beaconChainETHStrategy,
-            "StrategyManager.completeQueuedWithdrawal: withdrawalDelayBlocks period has not yet passed"
-        );
+358: if (!_standardFundingVoteSucceeded(proposalId_) || proposal.executed) revert ProposalNotSuccessful();
+421: if (block.number <= endBlock || block.number > _getChallengeStageEndBlock(endBlock)) {
+532: if (block.number <= screeningStageEndBlock || block.number > endBlock) revert InvalidVote();
+578: if (block.number < currentDistribution.startBlock || block.number > _getScreeningStageEndBlock(currentDistribution.endBlock)) revert InvalidVote();
+641: if (support == 0 && existingVote.votesUsed > 0 || support == 1 && existingVote.votesUsed < 0) {
 
 ```
-[StrategyManager.sol#L761-L764](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L761-L764)
-
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L358
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-139: require(updatedTotalShares >= MIN_NONZERO_TOTAL_SHARES || updatedTotalShares == 0,
-            "StrategyBase.withdraw: updated totalShares amount would be nonzero but below MIN_NONZERO_TOTAL_SHARES");
+70: if (proposal.executed || !_extraordinaryProposalSucceeded(proposalId_, tokensRequested)) revert ExecuteExtraordinaryProposalInvalid();
 
-198: if (tokenBalance == 0 || totalShares == 0) {
+139: if (proposal.startBlock > block.number || proposal.endBlock < block.number || proposal.executed) {
 
 ```
-[StrategyBase.sol#L139-L140](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L139-L140)
-
-##
-
-## [G-7] Functions should be used instead of modifiers to save gas
-
-> Instances(15)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L70
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
 
-96: modifier onlyNotFrozen(address staker) {
-        require(
-            !slasher.isFrozen(staker),
-            "StrategyManager.onlyNotFrozen: staker has been frozen and may be subject to slashing"
-        );
-        _;
-    }
+110: if (targets_.length == 0 || targets_.length != values_.length || targets_.length != calldatas_.length) revert InvalidProposal();
 
-104: modifier onlyFrozen(address staker) {
-        require(slasher.isFrozen(staker), "StrategyManager.onlyFrozen: staker has not been frozen");
-        _;
-    }
-
-109: modifier onlyEigenPodManager {
-        require(address(eigenPodManager) == msg.sender, "StrategyManager.onlyEigenPodManager: not the eigenPodManager");
-        _;
-    }
-
-114: modifier onlyStrategyWhitelister {
-        require(msg.sender == strategyWhitelister, "StrategyManager.onlyStrategyWhitelister: not the strategyWhitelister");
-        _;
-    }
-
-119: modifier onlyStrategiesWhitelistedForDeposit(IStrategy strategy) {
-        require(strategyIsWhitelistedForDeposit[strategy], "StrategyManager.onlyStrategiesWhitelistedForDeposit: strategy not whitelisted");
-        _;
-    }
+115:  if (targets_[i] != ajnaTokenAddress || values_[i] != 0) revert InvalidProposal();
 
 ```
-[StrategyManager.sol#L96-L122](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L96-L122)
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L99-L124
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L131-L134
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L66-L74
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L39-L42
-
-
-##
-
-## [G-8] Sort Solidity operations using short-circuit mode
-
-> Instances(3)
-
-Short-circuiting is a solidity contract development model that uses OR/AND logic to sequence different cost operations. It puts low gas cost operations in the front and high gas cost operations in the back, so that if the front is low If the cost operation is feasible, you can skip (short-circuit) the subsequent high-cost Ethereum virtual machine operation.
-
-```
-
-//f(x) is a low gas cost operation
-//g(y) is a high gas cost operation
-//Sort operations with different gas costs as follows
-f(x) || g(y)
-f(x) && g(y)
-
-```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L110
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-761: require(queuedWithdrawal.withdrawalStartBlock + withdrawalDelayBlocks <= block.number
-                || queuedWithdrawal.strategies[0] == beaconChainETHStrategy,
-            "StrategyManager.completeQueuedWithdrawal: withdrawalDelayBlocks period has not yet passed"
-        );
+369: if (position.depositTime == 0 || position.lps == 0) revert RemovePositionFailed();
 
 ```
-[StrategyManager.sol#L761-L764](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L761-L764)
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-139: require(updatedTotalShares >= MIN_NONZERO_TOTAL_SHARES || updatedTotalShares == 0,
-            "StrategyBase.withdraw: updated totalShares amount would be nonzero but below MIN_NONZERO_TOTAL_SHARES");
-
-```
-[StrategyBase.sol#L139-L140](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L139-L140)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-56: require(
-            address(pauserRegistry) == address(0) && address(_pauserRegistry) != address(0),
-            "Pausable._initializePauser: _initializePauser() can only be called once"
-        );
-
-```
-[Pausable.sol#L56-L59](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L56-L59)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L369
 
 ##
 
 ## [G-9] Use assembly to check for address(0)
 
-> Instances(12)
+> Instances(1)
 
-> Approximate gas saved : 72 gas
+> Approximate gas saved : 6 gas
 
 Saves 6 gas per instance
 
 ```solidity
-FILE: FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-343: require(withdrawer != address(0), "StrategyManager.queueWithdrawal: cannot withdraw to zero address");
-631: require(depositor != address(0), "StrategyManager._addShares: depositor cannot be zero address");
-684: require(depositor != address(0), "StrategyManager._removeShares: depositor cannot be zero address");
+96: if (ajnaToken_ == address(0)) revert DeployWithZeroAddress();
 
 ```
-[StrategyManager.sol#L343](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L343)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-114: if(address(pod) == address(0)) {
-196: if (address(pod) == address(0)) {
-211: return address(ownerToPod[podOwner]) != address(0);
-
-
-```
-[EigenPodManager.sol#L114](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L114)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-153: require(_podOwner != address(0), "EigenPod.initialize: podOwner cannot be zero address");
-
-```
-[EigenPod.sol#L153](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L153)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/PauserRegistry.sol
-
-42: require(newPauser != address(0), "PauserRegistry._setPauser: zero address input");
-48: require(newUnpauser != address(0), "PauserRegistry._setUnpauser: zero address input");
-
-```
-[PauserRegistry.sol#L42](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/PauserRegistry.sol#L42)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-57: address(pauserRegistry) == address(0) && address(_pauserRegistry) != address(0),
-
-```
-[Pausable.sol#L57](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L57)
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-45: require(address(_eigenPodManager) != address(0), "DelayedWithdrawalRouter.constructor: _eigenPodManager cannot be zero address");
-
-```
-[DelayedWithdrawalRouter.sol#L45](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L45)
-
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L96
 
 ##
 
 ## [G-10] Shorthand way to write if / else statement can reduce the deployment cost
 
-> Instances(7)
+> Instances(2)
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-289: if (Address.isContract(staker)) {
-            require(IERC1271(staker).isValidSignature(digestHash, signature) == ERC1271_MAGICVALUE,
-                "StrategyManager.depositIntoStrategyWithSignature: ERC1271 signature verification failed");
-        } else {
-            require(ECDSA.recover(digestHash, signature) == staker,
-                "StrategyManager.depositIntoStrategyWithSignature: signature not from staker");
-        }
+445: if (epoch_ != stakingEpoch_) {
 
-
-567: if (queuedWithdrawal.strategies[i] == beaconChainETHStrategy){
-                     //withdraw the beaconChainETH to the recipient
-                    _withdrawBeaconChainETH(queuedWithdrawal.depositor, recipient, queuedWithdrawal.shares[i]);
-                } else {
-                    // tell the strategy to send the appropriate amount of funds to the recipient
-                    queuedWithdrawal.strategies[i].withdraw(recipient, tokens[i], queuedWithdrawal.shares[i]);
-                }
-
-781: if (queuedWithdrawal.strategies[i] == beaconChainETHStrategy) {
-
-                    // if the strategy is the beaconchaineth strat, then withdraw through the EigenPod flow
-                    _withdrawBeaconChainETH(queuedWithdrawal.depositor, msg.sender, queuedWithdrawal.shares[i]);
-                } else {
-                    // tell the strategy to send the appropriate amount of funds to the depositor
-                    queuedWithdrawal.strategies[i].withdraw(
-                        msg.sender, tokens[i], queuedWithdrawal.shares[i]
-                    );
-                }
-```
-[StrategyManager.sol#L289-L295](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L289-L295)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-96: if (priorTokenBalance == 0) {
-                newShares = amount;
+                // if staked in a previous epoch then use the initial exchange rate of epoch
+                bucketRate = bucketExchangeRates[ajnaPool_][bucketIndex][epoch_];
             } else {
-                newShares = (amount * totalShares) / priorTokenBalance;
+
+                // if staked during the epoch then use the bucket rate at the time of staking
+                bucketRate = bucketSnapshot.rateAtStakeTime;
             }
 
-149: if (priorTotalShares == amountShares) {
-            amountToSend = _tokenBalance();
-        } else {
-            amountToSend = (_tokenBalance() * amountShares) / priorTotalShares;
-        }
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L445-L453
 
-173: if (totalShares == 0) {
-            return amountShares;
-        } else {
-            return (_tokenBalance() * amountShares) / totalShares;
-        }
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-198: if (tokenBalance == 0 || totalShares == 0) {
-            return amountUnderlying;
-        } else {
-            return (amountUnderlying * totalShares) / tokenBalance;
+208: if (_fundedExtraordinaryProposals.length == 0) {
+            return 0.5 * 1e18;
         }
-
+        // minimum threshold increases according to the number of funded EFM proposals
+        else {
+            return 0.5 * 1e18 + (_fundedExtraordinaryProposals.length * (0.05 * 1e18));
+        }
 
 ```
-[StrategyBase.sol#L96-L100](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L96-L100)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L208-L214
+
+
 
 
 ### Recommended Mitigation
 
 ```solidity
 
-Address.isContract(staker : require(IERC1271(staker).isValidSignature(digestHash, signature) == ERC1271_MAGICVALUE,
-                "StrategyManager.depositIntoStrategyWithSignature: ERC1271 signature verification failed") ? require(ECDSA.recover(digestHash, signature) == staker,
-                "StrategyManager.depositIntoStrategyWithSignature: signature not from staker"); 
+epoch_ != stakingEpoch_? bucketRate = bucketExchangeRates[ajnaPool_][bucketIndex][epoch_] :  bucketRate = bucketSnapshot.rateAtStakeTime;
 
 ```
-
-##
-
-## [G-11] require() or revert() statements that check input arguments should be at the top of the function
-
-> Instances(4)
-
-Checks that involve constants should come before checks that involve state variables, function calls, and calculations. By doing these checks first, the function is able to revert before wasting a Gcoldsload (2100 gas*) in a function that may ultimately revert in the unhappy case
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-+ 360: require(strategies.length == 1,
-                    "StrategyManager.queueWithdrawal: cannot queue a withdrawal including Beacon Chain ETH
--360: require(withdrawer == msg.sender,
-                    "StrategyManager.queueWithdrawal: cannot queue a withdrawal of Beacon Chain ETH to a different address");
-- 361: require(strategies.length == 1,
-                    "StrategyManager.queueWithdrawal: cannot queue a withdrawal including Beacon Chain ETH and other tokens");
-+ 360: require(withdrawer == msg.sender,
-                    "StrategyManager.queueWithdrawal: cannot queue a withdrawal of Beacon Chain ETH to a
-
-+ 631: require(shares != 0, "StrategyManager._addShares: shares should not be zero!");
-- 631: require(depositor != address(0), "StrategyManager._addShares: depositor cannot be zero address");
-- 632: require(shares != 0, "StrategyManager._addShares: shares should not be zero!");
-+ 632: require(depositor != address(0), "StrategyManager._addShares: depositor cannot be zero address");
-
-+ 684: require(shareAmount != 0, "StrategyManager._removeShares: shareAmount should not be zero!");
-- 684: require(depositor != address(0), "StrategyManager._removeShares: depositor cannot be zero address");
-- 685: require(shareAmount != 0, "StrategyManager._removeShares: shareAmount should not be zero!");
-+ 685: require(depositor != address(0), "StrategyManager._removeShares: depositor cannot be zero address");
-
-750: require(
-            withdrawalRootPending[withdrawalRoot],
-            "StrategyManager.completeQueuedWithdrawal: withdrawal is not pending"
-        );
-
-+ 766: require(
-            msg.sender == queuedWithdrawal.withdrawerAndNonce.withdrawer,
-            "StrategyManager.completeQueuedWithdrawal: only specified withdrawer can complete a queued withdrawal"
-        );
-
-755: require(
-            slasher.canWithdraw(queuedWithdrawal.delegatedAddress, queuedWithdrawal.withdrawalStartBlock, middlewareTimesIndex),
-            "StrategyManager.completeQueuedWithdrawal: shares pending withdrawal are still slashable"
-        );
-
-        // enforce minimum delay lag (not applied to withdrawals of 'beaconChainETH', since the EigenPods enforce their own delay)
-761: require(queuedWithdrawal.withdrawalStartBlock + withdrawalDelayBlocks <= block.number
-                || queuedWithdrawal.strategies[0] == beaconChainETHStrategy,
-            "StrategyManager.completeQueuedWithdrawal: withdrawalDelayBlocks period has not yet passed"
-        );
-
-- 766: require(
-            msg.sender == queuedWithdrawal.withdrawerAndNonce.withdrawer,
-            "StrategyManager.completeQueuedWithdrawal: only specified withdrawer can complete a queued withdrawal"
-        );
-
-```
-[StrategyManager.sol#L360-L363](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L360-L363)
-
 ##
 
 ## [G-12] internal functions not called by the contract should be removed to save deployment gas
 
-> Instances(9)
+> Instances()
 
 If the functions are required by an interface, the contract should inherit from that interface and use the override keyword
 
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
+FILE: 
 
-55: function _initializePauser(IPauserRegistry _pauserRegistry, uint256 initPausedStatus) internal {
 
 ```
-[permissions/Pausable.sol#L55](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L55)
+
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/BeaconChainProofs.sol
 
-245: function verifyWithdrawalProofs(
-        bytes32 beaconStateRoot,
-        WithdrawalProofs calldata proofs,
-        bytes32[] calldata withdrawalFields
-    ) internal view {
 
-221: function verifyValidatorBalance(
-        uint40 validatorIndex,
-        bytes32 beaconStateRoot,
-        bytes calldata proof,
-        bytes32 balanceRoot
-    ) internal view {
 
-192: function verifyValidatorFields(
-        uint40 validatorIndex,
-        bytes32 beaconStateRoot,
-        bytes calldata proof,
-        bytes32[] calldata validatorFields
-    ) internal view {
-
-178: function getBalanceFromBalanceRoot(uint40 validatorIndex, bytes32 balanceRoot) internal pure returns (uint64) {
-
-160: function computePhase0Eth1DataRoot(bytes32[NUM_ETH1_DATA_FIELDS] calldata eth1DataFields) internal pure returns(bytes32) { 
-
-150: function computePhase0ValidatorRoot(bytes32[NUM_VALIDATOR_FIELDS] calldata validatorFields) internal pure returns(bytes32) { 
-
-140: function computePhase0BeaconStateRoot(bytes32[NUM_BEACON_STATE_FIELDS] calldata beaconStateFields) internal pure returns(bytes32) {
-
-130: function computePhase0BeaconBlockHeaderRoot(bytes32[NUM_BEACON_BLOCK_HEADER_FIELDS] calldata blockHeaderFields) internal pure returns(bytes32) {
 
 ```
-[BeaconChainProofs.sol#L245-L249](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L245-L249)
+
 
 ##
 
@@ -1273,26 +946,23 @@ So we can avoid 1 Gsset (20000 gas)
 
 
 
-[G‑01]  Multiple address/ID mappings can be combined into a single mapping of an address/ID to a struct, where appropriate      1       -
-[G‑02]  State variables should be cached in stack variables rather than re-reading them from storage    15      1455
-[G‑03]  Multiple accesses of a mapping/array should use a local variable cache  11      462
+
+
+
 [G‑04]  <x> += <y> costs more gas than <x> = <x> + <y> for state variables      5       565
-[G‑05]  internal functions only called once can be inlined to save gas  4       80
-[G‑06]  Add unchecked {} for subtractions where the operands cannot underflow because of a previous require() or if-statement   5       425
-[G‑07]  <array>.length should not be looked up in every loop of a for-loop      4       12
-[G‑08]  ++i/i++ should be unchecked{++i}/unchecked{i++} when it is not possible for them to overflow, as is the case when used in for- and while-loops  8       480
+
+
 [G‑09]  require()/revert() strings longer than 32 bytes cost extra gas  86      -
-[G‑10]  Optimize names to save gas      19      418
+
 [G‑11]  Using bools for storage incurs overhead 4       68400
 [G‑12]  ++i costs less gas than i++, especially when it's used in for-loops (--i/i-- too)       4       20
 [G‑13]  Splitting require() statements that use && saves gas    1       3
-[G‑14]  Usage of uints/ints smaller than 32 bytes (256 bits) incurs overhead    4       -
-[G‑15]  Using private rather than public for constants, saves gas       6       -
-[G‑16]  Division by two should use bit shifting 2       40
+
+
 [G‑17]  require() or revert() statements that check input arguments should be at the top of the function 1      -
 [G‑18]  Use custom errors rather than revert()/require() strings to save gas    88      -
 [G‑19]  Functions guaranteed to revert when called by normal users can be marked payable        36      756
-[G‑20]  Constructors can be marked payable      7       147
+
 
 
 
