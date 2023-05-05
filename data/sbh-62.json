@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "2",
+  "title": "Lack of validation on distributionId_ in IStandardFunding.sol",
+  "issueId": 62,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/62"
+}
