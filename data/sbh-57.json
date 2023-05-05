@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "3",
+  "title": "lack of input validation in fundingAmount_ argument in the fundTreasury function can be exploited by attackers to steal funds or cause other unintended behavior in IGrantFund.sol",
+  "issueId": 57,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/57"
+}
