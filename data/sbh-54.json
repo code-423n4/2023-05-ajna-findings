@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sbh",
+  "risk": "3",
+  "title": "Lack of input sanitization in the description_ argument could result to execute arbitrary code in ExtraordinaryFunding.sol",
+  "issueId": 54,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/54"
+}
