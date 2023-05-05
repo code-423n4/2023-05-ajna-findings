@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xStalin",
+  "risk": "2",
+  "title": "An Attacker can take all the rewards assigned to the RewardsManager by using fake pools by calling RewardsManager.updateBucketExchangeRatesAndClaim()",
+  "issueId": 64,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/64"
+}
