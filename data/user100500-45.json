@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "user100500",
+  "risk": "3",
+  "title": "Reentrancy vulnerability in moveStakedLiquidity function",
+  "issueId": 45,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/45"
+}
