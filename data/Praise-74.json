@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "DelegateRewardClaimed msg will be emitted even when the safeTransfer() reverts on failure.",
+  "issueId": 74,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/74"
+}
