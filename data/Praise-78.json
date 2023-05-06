@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "3",
+  "title": "A non-active/invalid proposal can be funded/ used in the fundingVote() function.",
+  "issueId": 78,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/78"
+}
