@@ -80,6 +80,68 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
+## [G-] USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS 
+
+calldata must be used when declaring an external function's dynamic parameters
+
+When a function with a memory array is called externally, the abi.decode ()  step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. 
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
+
+23: address[] memory targets_,
+24: uint256[] memory values_,
+25: bytes[] memory calldatas_,
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L23-L25
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+137: uint256[] memory fromBuckets_,
+138: uint256[] memory toBuckets_,
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L137-L138
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
+
+57: address[] memory targets_,
+58: uint256[] memory values_,
+59: bytes[] memory calldatas_,
+
+87: address[] memory targets_,
+88: uint256[] memory values_,
+89: bytes[] memory calldatas_,
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L57-L59
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+344: address[] memory targets_,
+345: uint256[] memory values_,
+346: bytes[] memory calldatas_,
+
+367: address[] memory targets_,
+368: uint256[] memory values_,
+369: bytes[] memory calldatas_,
+
+520: FundingVoteParams[] memory voteParams_
+
+573: ScreeningVoteParams[] memory voteParams_
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L344-L346
+
+##
+
+
+##
+
 ## [G-2] Structs can be packed into fewer storage slots
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
@@ -109,6 +171,83 @@ The MoveLiquidityLocalVars struct can be packed into one slot less slot as sugge
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L78-L87
+
+##
+
+## [G-] <x> += <y>/<x> -= <y> costs more gas than <x> = <x> + <y>/<x> = <x> - <y> for state variables  
+
+FOR EVERY CALL CAN SAVE 13 GAS
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
+
+62: treasury += fundingAmount_;
+
+``` 
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L62
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
+
+320: fromPosition.lps -= vars.lpbAmountFrom;
+321: toPosition.lps   += vars.lpbAmountTo;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L320-L321
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+729: updateRewardsClaimed[curBurnEpoch] += updatedRewards_;
+411: rewardsClaimed[epoch]           += nextEpochRewards;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L729
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
+
+145: proposal.votesReceived += SafeCast.toUint120(votesCast_);
+78:  treasury -= tokensRequested;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L145
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+157: treasury -= gbc;
+217: treasury += (fundsAvailable - totalTokensRequested);
+64:  existingVote.votesUsed += voteParams_.votesUsed;
+673: currentDistribution_.fundingVotePowerCast += incrementalVotingPowerUsed;
+676: proposal_.fundingVotesReceived += SafeCast.toInt128(voteParams_.votesUsed);
+712: proposal_.votesReceived += SafeCast.toUint128(votes_);
+743: screeningVotesCast[proposal_.distributionId][account_] += votes_;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L157
+
+##
+
+## [G-] SUPERFLUOUS EVENT FIELDS
+
+block.timestamp and block.number are added to event information by default so adding them manually wastes gas
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
+
+120: block.number,
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L120
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+400: block.number,
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L400
 
 ##
 
@@ -363,7 +502,9 @@ ALL IN SCOPE CONTRACTS
 Upgrade to the latest solidity version 0.8.19 to get additional gas savings. See latest release for reference: https://blog.soliditylang.org/2023/02/22/solidity-0.8.19-release-announcement/
 
 ```solidity
-FILE: 
+FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
+
+
 ```
 ##
 
@@ -803,17 +944,9 @@ So we can avoid 1 Gsset (20000 gas)
 
 
 
-[G-] STATE VARIABLES SHOULD BE CACHED IN STACK VARIABLES RATHER THAN RE-READING THEM FROM STORAGE 14
-L
 
-The instances below point to the second+ access of a state variable within a function. Caching of a state variable replace each Gwarmaccess (100 gas) with a much cheaper stack read. Other less obvious fixes/optimizations include having local memory caches of state variable structs, or having local caches of state variable contracts/addresses. Most of the times this if statement will be true and we will save 100 gas at a small possibility of 3 gas loss ,
 
-[G-] USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS 8
-L
 
-calldata must be used when declaring an external function's dynamic parameters
-
-When a function with a memory array is called externally, the abi.decode ()  step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. 
 
 [G-] The result of function calls should be cached rather than re-calling the function 3
 L
@@ -826,100 +959,15 @@ Avoids a Gsset (20000 gas) in the constructor, and replaces the first access in 
 
 While strings are not value types, and therefore cannot be immutable/constant if not hard-coded outside of the constructor, the same behavior can be achieved by making the current contract abstract with virtual functions for the string accessors, and having a child contract override the functions with the hard-coded implementation-specific values.
 
-[G-]State variables can be packed into fewer storage slots
+[G-] State variables can be packed into fewer storage slots
 
 The EVM works with 32 byte words. Variables less than 32 bytes can be declared next to eachother in storage and this will pack the values together into a single 32 byte storage slot (if the values combined are <= 32 bytes). If the variables packed together are retrieved together in functions we will effectively save ~2000 gas with every subsequent SLOAD for that storage slot. This is due to us incurring a Gwarmaccess (100 gas) versus a Gcoldsload (2100 gas).
 
-[G-]Using storage instead of memory for structs/arrays saves gas
 
-When fetching data from a storage location, assigning the data to a memory variable causes all fields of the struct/array to be read from storage, which incurs a Gcoldsload (2100 gas) for each field of the struct/array. If the fields are read from the new memory variable, they incur an additional MLOAD rather than a cheap stack read. Instead of declearing the variable with the memory keyword, declaring the variable with the storage keyword and caching any fields that need to be re-read in stack variables, will be much cheaper, only incuring the Gcoldsload for the fields actually read. The only time it makes sense to read the whole struct/array into a memory variable, is if the full struct/array is being returned by the function, is being passed to a function that requires memory, or if the array/struct is being read from another memory array/struct
-
-
-[G-] Functions guaranteed to revert when called by normal users can be marked payable
-
-If a function modifier such as onlyOwner is used, the function will revert if a normal user tries to pay the function. Marking the function as payable will lower the gas cost for legitimate callers because the compiler will not include checks for whether a payment was provided. The extra opcodes avoided are CALLVALUE(2),DUP1(3),ISZERO(3),PUSH2(3),JUMPI(10),PUSH1(3),DUP1(3),REVERT(0),JUMPDEST(1),POP(2), which costs an average of about 21 gas per call to the function, in addition to the extra deployment cost
-
-
-
-[G-] Multiple accesses of a mapping/array should use a local variable cache
-
-The instances below point to the second+ access of a value inside a mapping/array, within a function. Caching a mapping’s value in a local storage or calldata variable when the value is accessed [multiple times](https://gist.github.com/IllIllI000/ec23a57daa30a8f8ca8b9681c8ccefb0), saves ~42 gas per access due to not having to recalculate the key’s keccak256 hash (Gkeccak256 - 30 gas) and that calculation’s associated stack operations. Caching an array’s struct avoids recalculating the array offsets into memory/calldata
-
-[G-] Using bools for storage incurs overhead
-
-```
-    // Booleans are more expensive than uint256 or any type that takes up a full
-    // word because each write operation emits an extra SLOAD to first read the
-    // slot's contents, replace the bits taken up by the boolean, and then write
-    // back. This is the compiler's defense against contract upgrades and
-    // pointer aliasing, and it cannot be disabled.
-```
-
-Use uint256(1) and uint256(2) for true/false to avoid a Gwarmaccess (100 gas) for the extra SLOAD, and to avoid Gsset (20000 gas) when changing from false to true, after having been true in the past
-
-
-
-[G-] use uint(1)/uint(2) instead of bool true/false 
-
-
-
-[G-] Structs can be packed into fewer storage slots
-
-Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
-
-Subsequent reads as well as writes have smaller gas savings.
-
-[G-] Save gas by checking against default WETH address
-
-external call la address check pannama check and value aa immutable ls store panni 2100 gas save pannalam 
-
-You can save a Gcoldsload (2100 gas) in the address provider, plus the 100 gas overhead of the external call, for every receive(), by creating an immutable DEFAULT_WETH variable which will store the initial WETH address, and change the require statement to be: require(msg.ender == DEFAULT_WETH || msg.sender == <etc>).
-
-[G-] Avoid emitting constants
-
-A log topic (declared with indexed) has a gas cost of Glogtopic (375 gas). The Stake and Withdraw events’ second indexed parameter is a constant for a majority of events emitted (with the exception of the events emitted in the _stakeLP() and _withdrawLP() functions) and is unecessary to emit since the value will never change. Alternatively, you can avoid incurring the Glogtopic (375 gas) per call to any function that emits Stake/Withdraw (with the exception of _stakeLP() and _withdrawLP()) by creating separate events for each staking/withdraw function and opt out of using the current indexed asset topic in each event. This way you can still query the different staking/withdraw events and will save 375 gas for each staking/withdraw function (with the exception of _stakeLP() and _withdrawLP()).
-
-Note that the events emitted in the _stakeLP() and withdrawLP() functions are not considered for this issue since the second indexed parameter is for the LP storage variable, which can be changed via the configureLP() function.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-[G‑04]  <x> += <y> costs more gas than <x> = <x> + <y> for state variables      5       565
-
-
-[G‑09]  require()/revert() strings longer than 32 bytes cost extra gas  86      -
-
-[G‑11]  Using bools for storage incurs overhead 4       68400
-[G‑12]  ++i costs less gas than i++, especially when it's used in for-loops (--i/i-- too)       4       20
-[G‑13]  Splitting require() statements that use && saves gas    1       3
-
-
-[G‑17]  require() or revert() statements that check input arguments should be at the top of the function 1      -
-[G‑18]  Use custom errors rather than revert()/require() strings to save gas    88      -
 [G‑19]  Functions guaranteed to revert when called by normal users can be marked payable        36      756
 
-[G-05] STATE VARIABLES SHOULD BE CACHED IN STACK VARIABLES RATHER THAN RE-READING THEM FROM STORAGE 14
-L
 
-[G-07] USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS 8
-L
 
-[G-09] The result of function calls should be cached rather than re-calling the function 3
-L
 
 
 
