@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "not-so-efficient check against duplicate ids",
+  "issueId": 77,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/77"
+}
