@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "proposalexecuted message is emitted without confirming if the call really went through",
+  "issueId": 76,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/76"
+}
