@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "nobody2018",
+  "risk": "3",
+  "title": "Anyone can claim other's rewards via  RewardsManager.updateBucketExchangeRatesAndClaim",
+  "issueId": 68,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/68"
+}
