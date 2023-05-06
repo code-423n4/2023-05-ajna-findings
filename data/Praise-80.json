@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "ExtraOrdinary Proposals that fail during execution can't be re-executed",
+  "issueId": 80,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/80"
+}
