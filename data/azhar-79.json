@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "azhar",
+  "risk": "2",
+  "title": "Without any proper access control anyone can use PositionManager's memorializePositions function to memorialize the position without Owner rights",
+  "issueId": 79,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/79"
+}
