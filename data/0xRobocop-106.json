@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "The state(uint256 proposalId_) function may return an incorrect value.",
+  "issueId": 106,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/106"
+}
