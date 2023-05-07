@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "ABAIKUNANBAEV",
+  "risk": "3",
+  "title": "RewardsManager.sol doesn't implement the onERC721Received() callback causing the user's NFT to be lost.",
+  "issueId": 90,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/90"
+}
