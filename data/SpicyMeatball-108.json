@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "SpicyMeatball",
+  "risk": "3",
+  "title": "Malicious user can steal all memorized liquidity from the `PositionManager` contract",
+  "issueId": 108,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/108"
+}
