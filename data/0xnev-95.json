@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xnev",
+  "risk": "3",
+  "title": "Lenders staking may lose accrued awards if they redeem position before unstaking",
+  "issueId": 95,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/95"
+}
