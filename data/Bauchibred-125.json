@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": "RewardsManager.sol: Calculating new rewards is still susceptible to precision loss due to division before multiplication",
+  "issueId": 125,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/125"
+}
