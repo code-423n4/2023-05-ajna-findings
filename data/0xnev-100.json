@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "Lenders may unintentionally claim rewards for all positions in buckets associated with their NFT when moving staked liquidity",
+  "issueId": 100,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/100"
+}
