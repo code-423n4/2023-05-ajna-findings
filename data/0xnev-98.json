@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "Lender can get excess LP as `fromPosition` is not deleted after moving liquidity",
+  "issueId": 98,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/98"
+}
