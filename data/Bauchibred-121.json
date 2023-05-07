@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": "RewardsManager.sol: `moveStakedLiquidity()` could produce undesired behavior and is vulnerable to griefing attacks due to the lack of the `from != to` check",
+  "issueId": 121,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/121"
+}
