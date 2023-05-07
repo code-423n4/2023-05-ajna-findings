@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": " `stake()` or `updateBucketExchangeRatesAndClaim()` could cost the users their unclaimed rewards",
+  "issueId": 124,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/124"
+}
