@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "Incorrect account on _updateTreasury() internal function",
+  "issueId": 103,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/103"
+}
