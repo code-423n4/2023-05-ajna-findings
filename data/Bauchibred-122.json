@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": " The current RewardsManager.sol does not implement the `onERC721Received()` function",
+  "issueId": 122,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/122"
+}
