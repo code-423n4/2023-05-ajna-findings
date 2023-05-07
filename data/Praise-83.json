@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Praise",
+  "risk": "2",
+  "title": "if execution to one of the targets fails, user won't be able to trace which of the executions failed.",
+  "issueId": 83,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/83"
+}
