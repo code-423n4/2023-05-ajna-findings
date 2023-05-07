@@ -41,3 +41,26 @@ However, some functions in the library use the hardcoded value `10**18`. This ca
 ### Recommendation
 
 Replace `10**18` with the `WAD` constant.
+
+## [N-02] Make `ajnaTokenAddress` a constant
+
+### Description
+
+The current implementation of the `Funding` contract declares `ajnaTokenAddress` as an immutable variable with a hardcoded value.
+
+[src/grants/base/Funding.sol#L21](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/Funding.sol#L21)
+
+```solidity
+    address public immutable ajnaTokenAddress = 0x9a96ec9B57Fb64FbC60B423d1f4da7691Bd35079;
+```
+
+Since the address is hardcoded and not expected to change, it can make the code clearer to declare it as a constant instead of an immutable variable.
+
+### Recommendation
+
+Consider changing the ajnaTokenAddress from an immutable variable to a constant as below:
+
+```diff
+-address public immutable ajnaTokenAddress = 0x9a96ec9B57Fb64FbC60B423d1f4da7691Bd35079;
++address public constant AJNA_TOKEN_ADDRESS = 0x9a96ec9B57Fb64FbC60B423d1f4da7691Bd35079;
+```
