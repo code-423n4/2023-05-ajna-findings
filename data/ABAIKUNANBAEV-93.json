@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "ABAIKUNANBAEV",
+  "risk": "2",
+  "title": "_transferAjnaRewards() can be front-runned resulting in a user getting less rewards.",
+  "issueId": 93,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/93"
+}
