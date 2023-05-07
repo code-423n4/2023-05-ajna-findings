@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "UniversalCrypto",
+  "risk": "2",
+  "title": "Malicious user can force remove certain proposals from `_topTenProposals`",
+  "issueId": 113,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/113"
+}
