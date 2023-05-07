@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "3",
+  "title": "RewardsManager.sol: `claimRewards()` is somewhat broken, it doesn't really claim all the rewards and could actually lead to senders losing part of their rewards and at worst even receive only 1 token",
+  "issueId": 116,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/116"
+}
