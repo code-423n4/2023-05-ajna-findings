@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "Permanent loss of rewards on temporary underfunding of `RewardsManager` contract",
+  "issueId": 114,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/114"
+}
