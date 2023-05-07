@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bauchibred",
+  "risk": "2",
+  "title": " Funding.sol: `_validateCallDatas()` undesired behaviour when arrays are too long",
+  "issueId": 118,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/118"
+}
