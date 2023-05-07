@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "aashar",
+  "risk": "2",
+  "title": "If `topTenProposals` is less than 10, then anyone can submit a proposal, vote for it and it will be included in the `topTenProposals` array",
+  "issueId": 87,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/87"
+}
