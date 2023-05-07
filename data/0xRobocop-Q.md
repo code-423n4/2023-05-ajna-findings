@@ -1,9 +1,7 @@
 # The following findings are based on the StandardFunding.sol contract
 
-## [L-01] Quadratic Funding implemented actually achieves the opposite
+## [L-01] Delegate rewards are distributed unfairly
 
-## [L-02] Delegate rewards are distributed unfairly
+## [L-02] Race condition issue on equivalent slates (Slates are selected sub-optimally)
 
-## [L-03] Race condition issue on equivalent slates (Slates are selected sub-optimally)
-
-## [L-04] Inconsistent returned values getVotesFunding and getVotesScreening
+## [L-03] Inconsistent returned values getVotesFunding and getVotesScreening
