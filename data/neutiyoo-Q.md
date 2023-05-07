@@ -58,7 +58,7 @@ Since the address is hardcoded and not expected to change, it can make the code 
 
 ### Recommendation
 
-Consider changing the ajnaTokenAddress from an immutable variable to a constant as below:
+Consider changing the `ajnaTokenAddress` from an immutable variable to a constant as below:
 
 ```diff
 -address public immutable ajnaTokenAddress = 0x9a96ec9B57Fb64FbC60B423d1f4da7691Bd35079;
