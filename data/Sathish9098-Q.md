@@ -52,11 +52,19 @@ Report contents changed: Report contents changed:  # LOW FINDINGS
 
 ##
 
+## [L-1] Events are missing sender information
 
+When an action is triggered based on a user's action, not being able to filter based on who triggered the action makes event processing a lot more cumbersome. Including the msg.sender the events of these types of action will make events much more useful to end users.
 
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
 
+64: emit FundTreasury(fundingAmount_, treasury);
 
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L64
 
+##
 
 ## [L-1] Prevent division by 0
 
