@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "ABAIKUNANBAEV",
+  "risk": "2",
+  "title": "In RewardsManager.sol, there is no check for isEpochClaimed before calling internal _claimRewards",
+  "issueId": 152,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/152"
+}
