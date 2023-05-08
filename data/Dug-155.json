@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Dug",
+  "risk": "2",
+  "title": "Rewards marked as claimed even if earned tokens are not sent",
+  "issueId": 155,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/155"
+}
