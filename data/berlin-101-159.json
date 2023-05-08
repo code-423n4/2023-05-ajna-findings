@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "berlin-101",
+  "risk": "2",
+  "title": "Executing a funding proposal may get the system into an unpredicted state if any target called is non-existing which does not revert the whole proposal execution",
+  "issueId": 159,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/159"
+}
