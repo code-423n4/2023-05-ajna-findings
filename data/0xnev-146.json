@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xnev",
+  "risk": "2",
+  "title": "Bucket exchange rates can still be updated before update period ends after burn event",
+  "issueId": 146,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/146"
+}
