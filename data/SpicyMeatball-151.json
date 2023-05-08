@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "SpicyMeatball",
+  "risk": "3",
+  "title": "Attacker can steal all Ajna tokens from `RewardsManager` due to the lack of pool address validation in `updateBucketExchangeRatesAndClaim`",
+  "issueId": 151,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/151"
+}
