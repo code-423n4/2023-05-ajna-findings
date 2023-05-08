@@ -504,200 +504,128 @@ Upgrade to the latest solidity version 0.8.19 to get additional gas savings. See
 ```solidity
 FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
 
+3: pragma solidity 0.8.16;
+
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/PositionManager.sol
+
+3: pragma solidity 0.8.14;
+
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+3: pragma solidity 0.8.14;
+
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+3: pragma solidity 0.8.16;
+
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
+
+3: pragma solidity 0.8.16;
+
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+3: pragma solidity 0.8.16;
 
 ```
 ##
 
 ## [G-18] Shorten the array rather than copying to a new one
 
-> Instances (10)
+> Instances ()
 
 Inline-assembly can be used to shorten the array by changing the length slot, so that the entries don't have to be copied to a new, shorter array
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+File: ajna-grants/src/grants/base/StandardFunding.sol
 
-200: IStrategy[] memory strategies = new IStrategy[](1);
-202: uint256[] memory shareAmounts = new uint256[](1);
-859: uint256[] memory shares = new uint256[](strategiesLength);
+203:  uint256[] memory fundingProposalIds = _fundedProposalSlates[fundedSlateHash];
 
-```
-[StrategyManager.sol#L200)](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L200)
+209:  Proposal memory proposal = _standardFundingProposals[fundingProposalIds[i]];
 
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/BeaconChainProofs.sol
+379:  QuarterlyDistribution memory currentDistribution = _distributions[_currentDistributionId];
 
-131: bytes32[] memory paddedHeaderFields = new bytes32[](2**BEACON_BLOCK_HEADER_FIELD_TREE_HEIGHT);
-141: bytes32[] memory paddedBeaconStateFields = new bytes32[](2**BEACON_STATE_FIELD_TREE_HEIGHT);
-151: bytes32[] memory paddedValidatorFields = new bytes32[](2**VALIDATOR_FIELD_TREE_HEIGHT);
-161: bytes32[] memory paddedEth1DataFields = new bytes32[](2**ETH1_DATA_FIELD_TREE_HEIGHT);
+575:  QuarterlyDistribution memory currentDistribution = _distributions[_currentDistributionId];
 
 ```
-[BeaconChainProofs.sol#L131](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L131)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/Merkle.sol
-
-100: bytes32[1] memory computedHash = [leaf];
-135: bytes32[] memory layer = new bytes32[](numNodesInLayer);
-```
-[Merkle.sol#L100](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L100)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-114: DelayedWithdrawal[] memory claimableDelayedWithdrawals = new DelayedWithdrawal[](claimableDelayedWithdrawalsLength);
-
-```
-[DelayedWithdrawalRouter.sol#L114](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L114)
+https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc131c905c/ajna-grants/src/grants/base/StandardFunding.sol#L203
 
 ##
 
 ## [G-19] abi.encode() is less efficient than abi.encodepacked()
 
-> Instances (6)
+> Instances ()
 
 [See for more information:](https://github.com/ConnorBlockchain/Solidity-Encode-Gas-Comparison)
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
 
-150: DOMAIN_SEPARATOR = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("EigenLayer")), ORIGINAL_CHAIN_ID, address(this)));
-
-268: bytes32 structHash = keccak256(abi.encode(DEPOSIT_TYPEHASH, strategy, token, amount, nonce, expiry));
-
-276: bytes32 domain_separator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("EigenLayer")), block.chainid, address(this)));
-
-877: return (
-            keccak256(
-                abi.encode(
-                    queuedWithdrawal.strategies,
-                    queuedWithdrawal.shares,
-                    queuedWithdrawal.depositor,
-                    queuedWithdrawal.withdrawerAndNonce,
-                    queuedWithdrawal.withdrawalStartBlock,
-                    queuedWithdrawal.delegatedAddress
-                )
-            )
-        );
+158: proposalId_ = uint256(keccak256(abi.encode(targets_, values_, calldatas_, descriptionHash_)));
 
 ```
-[StrategyManager.sol#L150](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L150)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L158
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-175: abi.encode(eigenPodBeacon, "")
-202: abi.encode(eigenPodBeacon, "")
+62: proposalId_ = _hashProposal(targets_, values_, calldatas_,keccak256(abi.encode(DESCRIPTION_PREFIX_HASH_EXTRAORDINARY, descriptionHash_)));
+
+92: proposalId_ = _hashProposal(targets_, values_, calldatas_, keccak256(abi.encode(DESCRIPTION_PREFIX_HASH_EXTRAORDINARY, keccak256(bytes(description_)))));
 
 ```
-[EigenPodManager.sol#L175](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L175)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#LL62C9-L62C148
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+314: bytes32 newSlateHash     = keccak256(abi.encode(proposalIds_));
+349: proposalId_ = _hashProposal(targets_, values_, calldatas_, keccak256(abi.encode(DESCRIPTION_PREFIX_HASH_STANDARD, descriptionHash_)));
+372: proposalId_ = _hashProposal(targets_, values_, calldatas_, keccak256(abi.encode(DESCRIPTION_PREFIX_HASH_STANDARD, keccak256(bytes(description_)))));
+983: return keccak256(abi.encode(proposalIds_));
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#LL314C9-L314C72
 
 ##
 
 ## [G-20] Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function
 
-> Instances(8)
+> Instances()
 
 Saves deployment costs
 
 ```solidity
-FILE: FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-631: require(depositor != address(0), "StrategyManager._addShares: depositor cannot be zero address");
-684: require(depositor != address(0), "StrategyManager._removeShares: depositor cannot be zero address");
+120: if (msg.sender != stakeInfo.owner) revert NotOwnerOfDeposit();
+143: if (msg.sender != stakeInfo.owner) revert NotOwnerOfDeposit();
+275: if (msg.sender != stakeInfo.owner) revert NotOwnerOfDeposit();
 
-```
-[StrategyManager.sol#L684](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L684)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-92:  if (totalShares == 0) {
-173: if (totalShares == 0) {
-
-86:  require(token == underlyingToken, "StrategyBase.deposit: Can only deposit underlyingToken");
-128: require(token == underlyingToken, "StrategyBase.withdraw: Can only withdraw the strategy token");
+751: if (burnExchangeRate == 0) {
+778: if (burnExchangeRate == 0) {
 
 ```
-[StrategyBase.sol#L92](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L92)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#LL120C1-L120C1
 
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-114: if(address(pod) == address(0)) {
-196: if (address(pod) == address(0)) {
-```
-[EigenPodManager.sol#L114](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L114)
-
-
-##
-
-## [G-21] Use hardcode address instead address(this)
-
-> Instances (4)
-
-Instead of using address(this), it is more gas-efficient to pre-calculate and use the hardcoded address. Foundry's script.sol and solmate's LibRlp.sol contracts can help achieve this
-
-[References:](https://book.getfoundry.sh/reference/forge-std/compute-create-address)
-
-https://twitter.com/transmissions11/status/1518507047943245824
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-150: DOMAIN_SEPARATOR = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("EigenLayer")), ORIGINAL_CHAIN_ID, address(this)));
-
-276: bytes32 domain_separator = keccak256(abi.encode(DOMAIN_TYPEHASH, keccak256(bytes("EigenLayer")), block.chainid, address(this)));
-
-```
-[StrategyManager.sol#L150](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L150)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-242: return underlyingToken.balanceOf(address(this));
-236:return strategyManager.stakerStrategyShares(user, IStrategy(address(this)));
-
-```
-[StrategyBase.sol#L242](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L242)
 
 ##
 
 ## [G-22] Public Functions To External
 
-> Instances (1)
+> Instances ()
 
 The following functions could be set external to save gas and improve code quality. External call cost is less expensive than of public functions.
 
 ```solidity
-File: src/contracts/pods/EigenPodManager.sol
+File: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-193:      function getPod(address podOwner) public view returns (IEigenPod) {
-
-[EigenPodManager.sol#L193](https://github.com/code-423n4/2023-04-eigenlayer/blob/398cc428541b91948f717482ec973583c9e76232/src/contracts/pods/EigenPodManager.sol#L193)
-
-```
-##
-
-## [G-23] Non-usage of specific imports
-
-INSTANCES : ALL CONTRACTS
-
-The current form of relative path import is not recommended for use because it can unpredictably pollute the namespace. Instead, the Solidity docs recommend specifying imported symbols explicitly. https://docs.soliditylang.org/en/v0.8.15/layout-of-source-files.html#importing-other-source-files
-
-A good example:
-
-```solidity
-
-import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/contracts/access/OwnableUpgradeable.sol";
-import {SafeTransferLib} from "solmate/utils/SafeTransferLib.sol";
-import {SafeCastLib} from "solmate/utils/SafeCastLib.sol";
-import {ERC20} from "solmate/tokens/ERC20.sol";
-import {IProducer} from "src/interfaces/IProducer.sol";
-import {GlobalState, UserState} from "src/Common.sol";
+517: function tokenURI(
+        uint256 tokenId_
+    ) public view override(ERC721) returns (string memory) {
 
 ```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L517-L519
+
 ##
 
 ## [G-24] It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied
@@ -788,15 +716,6 @@ FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
 ```
 [EigenPod.sol#L450](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L450)
 
-##
-
-## [G-26] Don't declare the variables inside the loops
-
-> Instances (1)
-
-Declare outside the loop and only use inside
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L142-L144
 
 ##
 
@@ -820,56 +739,7 @@ FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
 ```
 [Pausable.sol#L43-L52](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L43-L52)
 
-##
 
-## [G-28] Remove the initializer modifier
-
-> Instances (5)
-
-If we can just ensure that the initialize() function could only be called from within the constructor, we shouldn’t need to worry about it getting called again.
-
-In the EVM, the constructor’s job is actually to return the bytecode that will live at the contract’s address. So, while inside a constructor, your address (address(this)) will be the deployment address, but there will be no bytecode at that address! So if we check address(this).code.length before the constructor has finished, even from within a delegatecall, we will get 0. So now let’s update our initialize() function to only run if we are inside a constructor
-
-Now the Proxy contract’s constructor can still delegatecall initialize(), but if anyone attempts to call it again (after deployment) through the Proxy instance, or tries to call it directly on the above instance, it will revert because address(this).code.length will be nonzero.
-
-Also, because we no longer need to write to any state to track whether initialize() has been called, we can avoid the 20k storage gas cost. In fact, the cost for checking our own code size is only 2 gas, which means we have a 10,000x gas savings over the standard version. Pretty neat!
-
-### Recommended Mitigation:
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-146: function initialize(address initialOwner, address initialStrategyWhitelister, IPauserRegistry _pauserRegistry, uint256 initialPausedStatus, uint256 _withdrawalDelayBlocks)
-        external
-        initializer
-
-+ require(address(this).code.length == 0, 'not in constructor');
-
-```
-```solidity
-
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-51: function initialize(IERC20 _underlyingToken, IPauserRegistry _pauserRegistry) public virtual initializer {
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-84: function initialize(
-        IBeaconChainOracle _beaconChainOracle,
-        address initialOwner,
-        IPauserRegistry _pauserRegistry,
-        uint256 _initPausedStatus
-    ) external initializer {
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-152: function initialize(address _podOwner) external initializer {
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-49:  function initialize(address initOwner, IPauserRegistry _pauserRegistry, uint256 initPausedStatus, uint256 _withdrawalDelayBlocks) external initializer {
-
-```
 ##
 
 ## [G-29] Do not calculate constants variables
@@ -897,53 +767,6 @@ FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
 ```
 [Pausable.sol#L23](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L23)
 
-##
-
-## [G-30] Using calldata instead of memory for read-only arguments in external functions saves gas
-
-When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
-
-If the array is passed to an internal function which passes the array to another internal function where the array is modified and therefore memory is used in the external call, it’s still more gass-efficient to use calldata when the external function uses modifiers, since the modifiers may prevent the internal functions from being called. Structs have the same overhead as an array of length one
-
-Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-254: bytes memory signature
-
-```
-[StrategyManager.sol#L254](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L254)
-
-##
-
-## [G-31] State variables can be packed into fewer storage slots
-
-> Instances (1)
-
-> Approximate gas saved : 1 Gsset (20000 gas)
-
-If variables occupying the same slot are both written the same function or by the constructor, avoids a separate Gsset (20000 gas). Reads of the variables can also be cheaper.
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-Total current slots (2)
-
-_paused only used to check whether or not the contract is currently paused. So uint64 type alone more than enough for this operations.
-
-So we can avoid 1 Gsset (20000 gas)
-
-17: IPauserRegistry public pauserRegistry;
-/// @dev whether or not the contract is currently paused
-+ 20: uint64 private _paused;
-- 20: uint256 private _paused;
-
-```
-[Pausable.sol#L17-L20](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L17-L20)
-
-
-
 
 
 
@@ -965,6 +788,12 @@ The EVM works with 32 byte words. Variables less than 32 bytes can be declared n
 
 
 [G‑19]  Functions guaranteed to revert when called by normal users can be marked payable        36      756
+
+[G-20] Possible to use arrays instead of EnumerableSet 
+
+Operations involving EnumerableSet can consume more gas compared to simple array operations. This is because EnumerableSet uses additional storage and requires extra operations to maintain the set's integrity and support enumeration. As a result, using EnumerableSet can increase the overall cost of your smart contract transactions
+
+
 
 
 
