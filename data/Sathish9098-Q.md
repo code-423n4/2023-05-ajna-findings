@@ -66,7 +66,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [L-1] Prevent division by 0
+## [L-2] Prevent division by 0
 
 These functions can be called with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero
 
@@ -80,7 +80,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc
 
 ##
 
-## [L-2] LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG
+## [L-3] LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG
 
 The project contracts in scope are using low level calls with solidity version before 0.8.14 which can result in optimizer bug
 
@@ -104,7 +104,7 @@ Consider upgrading to at least solidity v0.8.15.
 
 ##
 
-## [L-3] Lack of sanity/threshold/limit checks for uint256 or address(0)
+## [L-4] Lack of sanity/threshold/limit checks for uint256 or address(0)
 
 Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
 
@@ -112,7 +112,7 @@ Devoid of sanity/threshold/limit checks, critical parameters can be configured t
 
 ##
 
-## [L-4] Gas griefing/theft is possible on unsafe external call
+## [L-5] Gas griefing/theft is possible on unsafe external call
 
 return data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0) . Thus, this storage disappears and may come from external contracts a possible Gas griefing/theft problem is avoided
 
