@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Bughunter101",
+  "risk": "2",
+  "title": "Inaccurate parameters may cause some unknown errors",
+  "issueId": 158,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/158"
+}
