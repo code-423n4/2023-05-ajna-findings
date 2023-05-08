@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Blckhv",
+  "risk": "2",
+  "title": "If address is a smart contract that can't handle ERC721 tokens they will be stuck after using `mint` in PositionsManager",
+  "issueId": 140,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/140"
+}
