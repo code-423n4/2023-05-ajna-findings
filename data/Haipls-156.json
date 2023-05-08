@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": " `PositionManager.sol#permit()` fail to validate signatures from counterfactual wallets",
+  "issueId": 156,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/156"
+}
