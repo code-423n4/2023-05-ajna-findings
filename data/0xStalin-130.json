@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xStalin",
+  "risk": "2",
+  "title": "Unsafe downcasting from uint256 to uint128",
+  "issueId": 130,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/130"
+}
