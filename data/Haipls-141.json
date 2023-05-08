@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": " `PositionManager` & `PermitERC721` Failure to comply with the EIP-4494",
+  "issueId": 141,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/141"
+}
