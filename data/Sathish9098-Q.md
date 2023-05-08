@@ -52,7 +52,102 @@ Report contents changed: Report contents changed:  # LOW FINDINGS
 
 ##
 
-## [L-1] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
+
+
+
+
+
+
+## [L-1] Prevent division by 0
+
+These functions can be called with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero
+
+```solidity
+File: ajna-grants/src/grants/libraries/Maths.sol
+
+38:  return (x * 10**18 + y / 2) / y;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc131c905c/ajna-grants/src/grants/libraries/Maths.sol#L38
+
+##
+
+## [L-2] LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG
+
+The project contracts in scope are using low level calls with solidity version before 0.8.14 which can result in optimizer bug
+
+https://medium.com/certora/overly-optimistic-optimizer-certora-bug-disclosure-2101e3f7994d
+
+Simliar findings in Code4rena contests for reference:
+
+https://code4rena.com/reports/2022-06-illuminate/#5-low-level-calls-with-solidity-version-0814-can-result-in-optimiser-bug
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
+
+484:  assembly { mstore(filteredIndexes_, filteredIndexesLength) }
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L484
+
+
+### Recommended Mitigation Steps
+Consider upgrading to at least solidity v0.8.15.
+
+##
+
+## [L-3] Lack of sanity/threshold/limit checks for uint256 or address(0)
+
+Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
+
+
+
+##
+
+## [L-4] Gas griefing/theft is possible on unsafe external call
+
+return data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0) . Thus, this storage disappears and may come from external contracts a possible Gas griefing/theft problem is avoided
+
+https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+- 63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
+ 
++            assembly {
++            let success := call(gas(), targets_[i], values_[i], add(calldatas_[i], 0x20), mload(calldatas_[i]))
++            }              
+
+```
+
+##
+
+## [L-6] Failed Function Call Could Occur Without Contract Existence Check
+
+Performing a low-level calls without confirming contract’s existence (not yet deployed or have been destructed) could return success even though no function call was executed. 
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L63
+
+Recommended Mitigation:
+
+```solidity
+
+  assembly {
+        codeSize := extcodesize(target[i])
+    }
+
+    require(codeSize > 0, "Contract does not exist");
+
+```
+
+## [L-7] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
 
 In Ajna grants projects using the vulnerable versions. 
 
@@ -89,112 +184,51 @@ Information Exposure
 
 ```
 
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol#L2
 
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol#L2
 
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/security/ReentrancyGuard.sol#L2
 
-## [L-1] Prevent division by 0
-
-These functions can be called with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero
-
-```solidity
-File: ajna-grants/src/grants/libraries/Maths.sol
-
-38:  return (x * 10**18 + y / 2) / y;
-
-```
-https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc131c905c/ajna-grants/src/grants/libraries/Maths.sol#L38
-
-##
-
-## [L-5] LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG
-
-The project contracts in scope are using low level calls with solidity version before 0.8.14 which can result in optimizer bug
-
-https://medium.com/certora/overly-optimistic-optimizer-certora-bug-disclosure-2101e3f7994d
-
-Simliar findings in Code4rena contests for reference:
-
-https://code4rena.com/reports/2022-06-illuminate/#5-low-level-calls-with-solidity-version-0814-can-result-in-optimiser-bug
-
-```solidity
-FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
-
-484:  assembly { mstore(filteredIndexes_, filteredIndexesLength) }
-
-```
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L484
-
-
-### Recommended Mitigation Steps
-Consider upgrading to at least solidity v0.8.15.
-
-##
-
-## [L-7] Lack of sanity/threshold/limit checks for uint256 or address(0)
-
-Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
-
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/utils/math/SafeCast.sol#L2
 
 
 ##
 
-## [L-3] Gas griefing/theft is possible on unsafe external call
+## [L-8] Function Calls in Loop Could Lead to Denial of Service
 
-return data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0) . Thus, this storage disappears and may come from external contracts a possible Gas griefing/theft problem is avoided
+Function calls made in unbounded loop are error-prone with potential resource exhaustion as it can trap the contract due to the gas limitations or failed transactions. Here are some of the instances entailed
 
-https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L62-L65
 
-```solidity
-FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L181-L199
 
-- 63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
- 
-+            assembly {
-+            let success := call(gas(), targets_[i], values_[i], add(calldatas_[i], 0x20), mload(calldatas_[i]))
-+            }              
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L163-L185
 
-```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L229-L241
 
+Recommended Mitigation:
+
+Consider bounding the loop where possible to avoid unnecessary gas wastage and denial of service.
 
 ##
 
-## [L-9] Project Upgrade and Stop Scenario should be
+## [L-9] 
+
+
+## [L-02] Missing Event for critical parameters init and change
+
+[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
+
+## [L-5] Project Upgrade and Stop Scenario should be
 
 At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an ” EMERGENCY STOP (CIRCUIT BREAKER) PATTERN “.
 
 https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol
 
 
-##
 
-## [L-14] Missing Contract-existence Checks Before Low-level Calls
 
-Low-level calls return success if there is no code present at the specified address.
-
-```solidity
-FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
-
-63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
-
-```
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L63
-
-Recommended Mitigation:
-
-```solidity
-
-  assembly {
-        codeSize := extcodesize(target[i])
-    }
-
-    require(codeSize > 0, "Contract does not exist");
-```
-
-##
-
-## [L-02] Missing Event for critical parameters init and change
-
-[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
 
 ##
 
