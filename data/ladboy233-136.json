@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "ladboy233",
+  "risk": "2",
+  "title": "Division before multiplication result in high precision loss when calculating new rewards",
+  "issueId": 136,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/136"
+}
