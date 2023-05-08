@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": " `PositionManager` & `PermitERC721` implement the `EIP-4494` standard, which in `DRAFT` status",
+  "issueId": 143,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/143"
+}
