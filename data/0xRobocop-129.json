@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xRobocop",
+  "risk": "2",
+  "title": "Race condition issue on equivalent slates",
+  "issueId": 129,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/129"
+}
