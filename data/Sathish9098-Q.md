@@ -52,7 +52,57 @@ Report contents changed: Report contents changed:  # LOW FINDINGS
 
 ##
 
+## [L-1] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
 
+In Ajna grants projects using the vulnerable versions. 
+
+https://security.snyk.io/package/npm/@openzeppelin%2Fcontracts
+
+
+```solidity
+
+VULNERABILITY	VULNERABLE VERSION
+M
+Incorrect Calculation	
+>=4.8.0 <4.8.2
+M
+Incorrect Calculation	
+>=4.8.0 <4.8.2
+H
+Improper Verification of Cryptographic Signature	
+<4.7.3
+M
+Denial of Service (DoS)	
+>=3.2.0 <4.7.2
+L
+Incorrect Resource Transfer Between Spheres	
+>=4.6.0 <4.7.2
+H
+Incorrect Calculation	
+>=4.3.0 <4.7.2
+H
+Information Exposure	
+>=4.1.0 <4.7.1
+H
+Information Exposure	
+>=4.0.0 <4.7.1
+
+```
+
+
+
+
+## [L-1] Prevent division by 0
+
+These functions can be called with 0 value in the input, this value is not checked for being bigger than 0, that means in some scenarios this can potentially trigger a division by zero
+
+```solidity
+File: ajna-grants/src/grants/libraries/Maths.sol
+
+38:  return (x * 10**18 + y / 2) / y;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc131c905c/ajna-grants/src/grants/libraries/Maths.sol#L38
 
 ##
 
@@ -63,16 +113,16 @@ The project contracts in scope are using low level calls with solidity version b
 https://medium.com/certora/overly-optimistic-optimizer-certora-bug-disclosure-2101e3f7994d
 
 Simliar findings in Code4rena contests for reference:
+
 https://code4rena.com/reports/2022-06-illuminate/#5-low-level-calls-with-solidity-version-0814-can-result-in-optimiser-bug
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/Merkle.sol
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-107:  if iszero(staticcall(sub(gas(), 2000), 2, 0x00, 0x40, computedHash, 0x20)) {revert(0, 0)}
-115:  if iszero(staticcall(sub(gas(), 2000), 2, 0x00, 0x40, computedHash, 0x20)) {revert(0, 0)
+484:  assembly { mstore(filteredIndexes_, filteredIndexesLength) }
 
 ```
-[Merkle.sol#L107](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L107)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L484
 
 
 ### Recommended Mitigation Steps
@@ -80,18 +130,30 @@ Consider upgrading to at least solidity v0.8.15.
 
 ##
 
-## [L-7] Lack of sanity/threshold/limit checks for uint256
+## [L-7] Lack of sanity/threshold/limit checks for uint256 or address(0)
 
-Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
-FILE : 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
 
-for(uint256 i = 0; i < queuedWithdrawals.length; i++) {
-            _completeQueuedWithdrawal(queuedWithdrawals[i], tokens[i], middlewareTimesIndexes[i], receiveAsTokens[i]);
-        }
+
+
+##
+
+## [L-3] Gas griefing/theft is possible on unsafe external call
+
+return data (bool success,) has to be stored due to EVM architecture, if in a usage like below, ‘out’ and ‘outsize’ values are given (0,0) . Thus, this storage disappears and may come from external contracts a possible Gas griefing/theft problem is avoided
+
+https://twitter.com/pashovkrum/status/1607024043718316032?t=xs30iD6ORWtE2bTTYsCFIQ&s=19
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+- 63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
+ 
++            assembly {
++            let success := call(gas(), targets_[i], values_[i], add(calldatas_[i], 0x20), mload(calldatas_[i]))
++            }              
+
 ```
-[StrategyManager.sol#L466-L468](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L466-L468)
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L498-L505
 
 
 ##
@@ -110,15 +172,29 @@ https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.s
 Low-level calls return success if there is no code present at the specified address.
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/Merkle.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
 
-107:  if iszero(staticcall(sub(gas(), 2000), 2, 0x00, 0x40, computedHash, 0x20)) {revert(0, 0)}
-115:  if iszero(staticcall(sub(gas(), 2000), 2, 0x00, 0x40, computedHash, 0x20)) {revert(0, 0)
+63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
 
 ```
-[Merkle.sol#L107](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L107)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L63
 
+Recommended Mitigation:
 
+```solidity
+
+  assembly {
+        codeSize := extcodesize(target[i])
+    }
+
+    require(codeSize > 0, "Contract does not exist");
+```
+
+##
+
+## [L-02] Missing Event for critical parameters init and change
+
+[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
 
 ##
 
