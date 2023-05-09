@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rvierdiiev",
+  "risk": "2",
+  "title": "Funding._getVotesAtSnapshotBlocks allows anyone to vote when they don't have votes",
+  "issueId": 168,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/168"
+}
