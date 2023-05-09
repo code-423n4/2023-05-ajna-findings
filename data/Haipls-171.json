@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": "Forced transfer of LP to `PositionManager.sol` from a User who approved tokens to `PositionManager.sol`",
+  "issueId": 171,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/171"
+}
