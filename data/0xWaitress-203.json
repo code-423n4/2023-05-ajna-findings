@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "staker can claim accrued rewards on the new buckets after moving liquidity to the new buckets",
+  "issueId": 203,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/203"
+}
