@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "Lost votes if tokens transferred 1 to 32 blocks before screening or funding stage",
+  "issueId": 200,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/200"
+}
