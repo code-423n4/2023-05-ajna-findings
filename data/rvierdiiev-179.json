@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rvierdiiev",
+  "risk": "3",
+  "title": "User can avoid bankrupting by calling PositionManager.moveLiquidity where to index is bankrupted index",
+  "issueId": 179,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/179"
+}
