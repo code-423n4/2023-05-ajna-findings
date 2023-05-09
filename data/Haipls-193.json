@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "3",
+  "title": "The user can steal funds from the PositionManager of the same index, and also get large positions for free in PositionManager",
+  "issueId": 193,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/193"
+}
