@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xLanterns",
+  "risk": "2",
+  "title": "The buyer of the the NFT position can be front-run by the seller",
+  "issueId": 196,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/196"
+}
