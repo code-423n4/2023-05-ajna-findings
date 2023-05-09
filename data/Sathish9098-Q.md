@@ -52,7 +52,7 @@ Report contents changed: Report contents changed:  # LOW FINDINGS
 
 ##
 
-## [L-1] Events are missing sender information
+## [L-1] Event are missing sender information
 
 When an action is triggered based on a user's action, not being able to filter based on who triggered the action makes event processing a lot more cumbersome. Including the msg.sender the events of these types of action will make events much more useful to end users.
 
@@ -229,10 +229,72 @@ At the start of the project, the system may need to be stopped or upgraded, I su
 
 https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol
 
+##
+
+## [L-9] Lack of nonReentrant modifiers for critical external functions 
+
+Apply the nonReentrant modifier to critical external functions to ensure they are not susceptible to reentrancy attacks
+
+ nonReentrant modifier, you can help protect your contract from reentrancy vulnerabilities. It's important to apply this modifier to functions that involve state changes or interact with external contracts, especially if they involve transfers of Ether or tokens
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+270: function unstake(
+        uint256 tokenId_
+    ) external override {
+
+114: function claimRewards(
+        uint256 tokenId_,
+        uint256 epochToClaim_
+    ) external override {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L270C22-L272
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
+
+131: function voteExtraordinary(
+        uint256 proposalId_
+    ) external override returns (uint256 votesCast_) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L131-L133
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+236: function claimDelegateReward(
+        uint24 distributionId_
+    ) external override returns(uint256 rewardClaimed_) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L236-L238
+
+##
+
+## [L-10] Missing Event for critical updates
+
+Emitting events for critical updates in your smart contract is a good practice to provide transparency and allow external systems to track and react to important changes. Events serve as a way to communicate the occurrence of significant events within a contract to off-chain systems or other contracts
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+executeStandard() execute the proposals once executed particular proposal.executed is set to true. Need to emit the event with particular proposalId_ to provide transparency and allow external systems to track and react to important changes. Once event emitted off-chain systems or other contracts know that particular proposal is already executed and all values_ transferred to targets_ addresses.
+
+343: function executeStandard(
+        address[] memory targets_,
+        uint256[] memory values_,
+        bytes[] memory calldatas_,
+        bytes32 descriptionHash_
+    ) external nonReentrant override returns (uint256 proposalId_) {
 
 
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L343-L348
 
-## [L-02] Missing Event for critical updates
+
 
 
 
