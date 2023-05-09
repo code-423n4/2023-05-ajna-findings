@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hassan-truscova",
+  "risk": "2",
+  "title": "_execute function in Funding.sol does not validate input length",
+  "issueId": 202,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/202"
+}
