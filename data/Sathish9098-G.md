@@ -794,6 +794,8 @@ The EVM works with 32 byte words. Variables less than 32 bytes can be declared n
 
 Operations involving EnumerableSet can consume more gas compared to simple array operations. This is because EnumerableSet uses additional storage and requires extra operations to maintain the set's integrity and support enumeration. As a result, using EnumerableSet can increase the overall cost of your smart contract transactions
 
+>0 consume less gas than !=
+
 
 
 
