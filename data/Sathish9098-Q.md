@@ -64,6 +64,15 @@ FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L64
 
+Recommended Mitigation:
+
+Add msg.sender for FundTreasury event 
+
+```solidity
+
+emit FundTreasury(msg.sender,fundingAmount_, treasury);
+
+```
 ##
 
 ## [L-2] Prevent division by 0
@@ -77,6 +86,15 @@ File: ajna-grants/src/grants/libraries/Maths.sol
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc131c905c/ajna-grants/src/grants/libraries/Maths.sol#L38
+
+Recommended Mitigation:
+
+Need to check this condition before division operations to avoid divide by zero errors
+
+```
+if(y!=0) 
+
+```
 
 ##
 
@@ -107,6 +125,10 @@ Consider upgrading to at least solidity v0.8.15.
 ## [L-4] Lack of sanity/threshold/limit checks for uint256 or address(0)
 
 Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
+
+- fundingAmount_ value is not check with != 0. To avoid useless transactions 
+
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L58-L68
 
 
 
@@ -201,38 +223,21 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/utils/math/SafeCast.sol#L2
 
 
-##
-
-## [L-8] Function Calls in Loop Could Lead to Denial of Service
-
-Function calls made in unbounded loop are error-prone with potential resource exhaustion as it can trap the contract due to the gas limitations or failed transactions. Here are some of the instances entailed
-
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L62-L65
-
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L181-L199
-
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L163-L185
-
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L229-L241
-
-Recommended Mitigation:
-
-Consider bounding the loop where possible to avoid unnecessary gas wastage and denial of service.
-
-##
-
-## [L-9] 
-
-
-## [L-02] Missing Event for critical parameters init and change
-
-[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
-
-## [L-5] Project Upgrade and Stop Scenario should be
+## [L-8] Project Upgrade and Stop Scenario should be
 
 At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an ” EMERGENCY STOP (CIRCUIT BREAKER) PATTERN “.
 
 https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol
+
+
+
+
+## [L-02] Missing Event for critical updates
+
+
+
+
+[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
 
 
 
@@ -247,200 +252,107 @@ https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.s
 ## [NC-1] immutable should be uppercase
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-44: IETHPOSDeposit public immutable ethPOS;
-47: IDelayedWithdrawalRouter public immutable delayedWithdrawalRouter;
-50: IEigenPodManager public immutable eigenPodManager;
-
-```
-[EigenPod.sol#L44](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L44)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-40: IETHPOSDeposit public immutable ethPOS;
-43: IBeacon public immutable eigenPodBeacon;
-46: IStrategyManager public immutable strategyManager;
-49: ISlasher public immutable slasher;
-52: IBeaconChainOracle public beaconChainOracle;
+69: ERC20PoolFactory  private immutable erc20PoolFactory;
+71: ERC721PoolFactory private immutable erc721PoolFactory;
 
 ```
-[EigenPodManager.sol#L40](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L40)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L69-L71
+
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L87-L89
+
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L21
 
 
 ### Recommended Mitigation
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-- 44: IETHPOSDeposit public immutable ethPOS;
-+ 44: IETHPOSDeposit public immutable ETHPOS;
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
++ 69: ERC20PoolFactory  private immutable ERC20POOLFACTORY;
++ 71: ERC721PoolFactory private immutable ERC721POOLFACTORY;
+- 69: ERC20PoolFactory  private immutable erc20PoolFactory;
+- 71: ERC721PoolFactory private immutable erc721PoolFactory;
 
 ```
 
 ##
 
-## [NC-2] Missing NATSPEC
+## [NC-2] Use NATSPEC commands for all contracts 
 
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L104-L122
+### CONTEXT
+ALL CONTRACTS 
 
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L76-L93
+Solidity contracts can use a special form of comments to provide rich documentation for functions, return variables and more. This special form is named the Ethereum Natural Language Specification Format (NatSpec).
 
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/PauserRegistry.sol#L17-L29
+https://docs.soliditylang.org/en/v0.8.17/natspec-format.html
 
 ##
 
-## [NC-3] For functions, follow Solidity standard naming conventions (internal function style rule)
+## [NC-3] For functions,Variables follow Solidity standard naming conventions (internal function,Variable style rule)
 
 ### Description
-The above codes don’t follow Solidity’s standard naming convention,
+The bellow codes don’t follow Solidity’s standard naming convention,
 
-internal and private functions : the mixedCase format starting with an underscore (_mixedCase starting with an underscore)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/BeaconChainProofs.sol
-
-130: function computePhase0BeaconBlockHeaderRoot(bytes32[NUM_BEACON_BLOCK_HEADER_FIELDS] calldata blockHeaderFields) internal pure returns(bytes32) {
-
-140: function computePhase0BeaconStateRoot(bytes32[NUM_BEACON_STATE_FIELDS] calldata beaconStateFields) internal pure returns(bytes32) {
-
-150: function computePhase0ValidatorRoot(bytes32[NUM_VALIDATOR_FIELDS] calldata validatorFields) internal pure returns(bytes32) { 
-
-160: function computePhase0Eth1DataRoot(bytes32[NUM_ETH1_DATA_FIELDS] calldata eth1DataFields) internal pure returns(bytes32) { 
-
-178: function getBalanceFromBalanceRoot(uint40 validatorIndex, bytes32 balanceRoot) internal pure returns (uint64) {
-
-192: function verifyValidatorFields(
-        uint40 validatorIndex,
-        bytes32 beaconStateRoot,
-        bytes calldata proof,
-        bytes32[] calldata validatorFields
-    ) internal view {
-
-221: function verifyValidatorBalance(
-        uint40 validatorIndex,
-        bytes32 beaconStateRoot,
-        bytes calldata proof,
-        bytes32 balanceRoot
-    ) internal view {
-
-245:  function verifyWithdrawalProofs(
-        bytes32 beaconStateRoot,
-        WithdrawalProofs calldata proofs,
-        bytes32[] calldata withdrawalFields
-    ) internal view {
-
-
-```
-[BeaconChainProofs.sol#L130](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L130)
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Endian.sol#L5-L7
-
-##
-
-## [NC-4] Need Fuzzing test for unchecked
+internal and private functions and Variables : the mixedCase format starting with an underscore (_mixedCase starting with an underscore)
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/PositionManager.sol
 
-269:  unchecked {
-379:  unchecked {
-395:  unchecked {
-517:  unchecked {
-563:  unchecked {
-574:  unchecked {
-600:  unchecked {
-615:  unchecked {
-692:  unchecked {
-731:  unchecked {
-791:  unchecked {
-799:  unchecked {
-863:  unchecked {
-
+55: mapping(uint256 => mapping(uint256 => Position)) internal positions;
+57: mapping(uint256 => uint96)                       internal nonces;
+59: mapping(uint256 => EnumerableSet.UintSet)        internal positionIndexes;
 
 ```
-[StrategyManager.sol#L269](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L269)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#LL55C5-L55C73
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+77: mapping(address => mapping(uint256 => mapping(uint256 => uint256))) internal bucketExchangeRates;
+80: mapping(uint256 => StakeInfo) internal stakes;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#LL77C5-L77C102
 
 ##
 
 
-##
+## [NC-4] According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword
 
-## [NC-5] NO SAME VALUE INPUT CONTROL
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-587: function setStrategyWhitelister(address newStrategyWhitelister) external onlyOwner {
-        _setStrategyWhitelister(newStrategyWhitelister);
-    }
-
-```
-[StrategyManager.sol#L587-L589](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L587-L589)
 
 ```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-File: src/contracts/pods/DelayedWithdrawalRouter.sol
+52: mapping(uint256 => address) public override poolKey;
+55: mapping(uint256 => mapping(uint256 => Position)) internal positions;
+57: mapping(uint256 => uint96)                       internal nonces;
+59: mapping(uint256 => EnumerableSet.UintSet)        internal positionIndexes;
 
-100      function setWithdrawalDelayBlocks(uint256 newValue) external onlyOwner {
-101          _setWithdrawalDelayBlocks(newValue);
-102:     }
-https://github.com/code-423n4/2023-04-eigenlayer/blob/398cc428541b91948f717482ec973583c9e76232/src/contracts/pods/DelayedWithdrawalRouter.sol#L100-L102
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-```
+70: mapping(uint256 => mapping(uint256 => bool)) public override isEpochClaimed;
+72: mapping(uint256 => uint256) public override rewardsClaimed;
+74: mapping(uint256 => uint256) public override updateRewardsClaimed;
+77: mapping(address => mapping(uint256 => mapping(uint256 => uint256))) internal bucketExchangeRates;
+79: mapping(uint256 => StakeInfo) internal stakes;
 
-```solidity
-File: src/contracts/pods/EigenPodManager.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
 
-161      function updateBeaconChainOracle(IBeaconChainOracle newBeaconChainOracle) external onlyOwner {
-162          _updateBeaconChainOracle(newBeaconChainOracle);
-163:     }
-https://github.com/code-423n4/2023-04-eigenlayer/blob/398cc428541b91948f717482ec973583c9e76232/src/contracts/pods/EigenPodManager.sol#L161-L163
-
-```
-
-```solidity
-
-File: lib/openzeppelin-contracts/contracts/access/Ownable.sol
-
-69       function transferOwnership(address newOwner) public virtual onlyOwner {
-70           require(newOwner != address(0), "Ownable: new owner is the zero address");
-71           _transferOwnership(newOwner);
-72:      }
+69: mapping(uint24 => QuarterlyDistribution) internal _distributions;
+75: mapping(uint256 => Proposal) internal _standardFundingProposals;
+82: mapping(uint256 => uint256[]) internal _topTenProposals;
+88: mapping(bytes32 => uint256[]) internal _fundedProposalSlates;
+94: mapping(uint256 => mapping(address => QuadraticVoter)) internal _quadraticVoters;
+100: mapping(uint256 => bool) internal _isSurplusFundsUpdated;
+106: mapping(uint256 => mapping(address => bool)) public hasClaimedReward;
+112: mapping(uint256 => mapping(address => uint256)) public screeningVotesCast;
 
 ```
-[Ownable.sol#L61-L63](https://github.com/code-423n4/2023-04-eigenlayer/blob/398cc428541b91948f717482ec973583c9e76232/lib/openzeppelin-contracts/contracts/access/Ownable.sol#L61-L63)
 
 ##
 
-## [NC-6] According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManagerStorage.sol
-
-25:  mapping(address => uint256) public nonces;
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-55:  mapping(address => IEigenPod) public ownerToPod;
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-76: mapping(uint40 => VALIDATOR_STATUS) public validatorStatus;
-
-79: mapping(uint40 => mapping(uint64 => bool)) public provenPartialWithdrawal;
-
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-30: mapping(address => UserDelayedWithdrawals) internal _userWithdrawals;
-
-```
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManagerStorage.sol#L49-L57
-
-## [NC-7] Use SMTChecker
+## [NC-5] Use SMTChecker
 
 The highest tier of smart contract behavior assurance is formal mathematical verification. All assertions that are made are guaranteed to be true across all inputs → The quality of your asserts is the quality of your verification
 
@@ -449,7 +361,7 @@ https://twitter.com/0xOwenThurm/status/1614359896350425088?t=dbG9gHFigBX85Rv29lO
 ##
 
 
-## [NC-8] Assembly Codes Specific – Should Have Comments
+## [NC-6] Assembly Codes Specific – Should Have Comments
 
 Since this is a low level language that is more difficult to parse by readers, include extensive documentation, comments on the rationale behind its use, clearly explaining what each assembly instruction does.
 
@@ -459,99 +371,67 @@ Note that using Assembly removes several important security features of Solidity
 
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/Merkle.sol
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
 
-53:  assembly {
-61:  assembly {
-104: assembly {
-112: assembly {
+484: assembly { mstore(filteredIndexes_, filteredIndexesLength) }
+
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+122: assembly {
+132: assembly {
 
 ```
-[Merkle.sol#L53](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L53)
-
 ##
 
-
-##
-
-## [NC-9] Shorthand way to write if / else statement
+## [NC-7] Shorthand way to write if / else statement
 
 The normal if / else statement can be refactored in a shorthand way to write it:
 
 Increases readability
 Shortens the overall SLOC
 
-
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-289: if (Address.isContract(staker)) {
-            require(IERC1271(staker).isValidSignature(digestHash, signature) == ERC1271_MAGICVALUE,
-                "StrategyManager.depositIntoStrategyWithSignature: ERC1271 signature verification failed");
-        } else {
-            require(ECDSA.recover(digestHash, signature) == staker,
-                "StrategyManager.depositIntoStrategyWithSignature: signature not from staker");
-        }
+445: if (epoch_ != stakingEpoch_) {
 
-
-567: if (queuedWithdrawal.strategies[i] == beaconChainETHStrategy){
-                     //withdraw the beaconChainETH to the recipient
-                    _withdrawBeaconChainETH(queuedWithdrawal.depositor, recipient, queuedWithdrawal.shares[i]);
-                } else {
-                    // tell the strategy to send the appropriate amount of funds to the recipient
-                    queuedWithdrawal.strategies[i].withdraw(recipient, tokens[i], queuedWithdrawal.shares[i]);
-                }
-
-781: if (queuedWithdrawal.strategies[i] == beaconChainETHStrategy) {
-
-                    // if the strategy is the beaconchaineth strat, then withdraw through the EigenPod flow
-                    _withdrawBeaconChainETH(queuedWithdrawal.depositor, msg.sender, queuedWithdrawal.shares[i]);
-                } else {
-                    // tell the strategy to send the appropriate amount of funds to the depositor
-                    queuedWithdrawal.strategies[i].withdraw(
-                        msg.sender, tokens[i], queuedWithdrawal.shares[i]
-                    );
-                }
-
-
-```
-
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-96: if (priorTokenBalance == 0) {
-                newShares = amount;
+                // if staked in a previous epoch then use the initial exchange rate of epoch
+                bucketRate = bucketExchangeRates[ajnaPool_][bucketIndex][epoch_];
             } else {
-                newShares = (amount * totalShares) / priorTokenBalance;
+
+                // if staked during the epoch then use the bucket rate at the time of staking
+                bucketRate = bucketSnapshot.rateAtStakeTime;
             }
 
-149: if (priorTotalShares == amountShares) {
-            amountToSend = _tokenBalance();
-        } else {
-            amountToSend = (_tokenBalance() * amountShares) / priorTotalShares;
-        }
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L445-L453
 
-173: if (totalShares == 0) {
-            return amountShares;
-        } else {
-            return (_tokenBalance() * amountShares) / totalShares;
-        }
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-198: if (tokenBalance == 0 || totalShares == 0) {
-            return amountUnderlying;
-        } else {
-            return (amountUnderlying * totalShares) / tokenBalance;
+208: if (_fundedExtraordinaryProposals.length == 0) {
+            return 0.5 * 1e18;
         }
-
+        // minimum threshold increases according to the number of funded EFM proposals
+        else {
+            return 0.5 * 1e18 + (_fundedExtraordinaryProposals.length * (0.05 * 1e18));
+        }
 
 ```
-[StrategyBase.sol#L96-L100](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L96-L100)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L208-L214
+
+### Recommended Mitigation
+
+```solidity
+
+epoch_ != stakingEpoch_? bucketRate = bucketExchangeRates[ajnaPool_][bucketIndex][epoch_] :  bucketRate = bucketSnapshot.rateAtStakeTime;
+
+```
 
 
 ##
 
-## [NC-10] Don't use named return variables its confusing
+## [NC-8] Don't use named return variables its confusing
 
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L27
 
@@ -585,115 +465,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L61
 
-
-
-
 ##
 
-## [NC-11] Constants should be in uppercase
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L37
-
-##
-
-
-
-## [NC-12] Shorter inheritance list
-
-``solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-26: contract StrategyManager is
-    Initializable,
-    OwnableUpgradeable,
-    ReentrancyGuardUpgradeable,
-    Pausable,
-    StrategyManagerStorage
-{
-
-```
-[StrategyManager.sol#L26-L32](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L26-L32)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-31: contract EigenPodManager is Initializable, OwnableUpgradeable, Pausable, IEigenPodManager, EigenPodPausingConstants {
-
-```
-[EigenPodManager.sol#L31](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L31)
-
-##
-
-## [NC-13] Include return parameters in NatSpec comments
-
-### Context
-All Contracts
-
-### Description
-It is recommended that Solidity contracts are fully annotated using NatSpec for all public interfaces (everything in the ABI). It is clearly stated in the Solidity official documentation. In complex projects such as Defi, the interpretation of all functions and their arguments and returns is important for code readability and auditability.
-
-https://docs.soliditylang.org/en/v0.8.15/natspec-format.html
-
-### Recommendation
-Include return parameters in NatSpec comments
-
-### Recommendation Code Style: (from Uniswap3)
-
-    /// @notice Adds liquidity for the given recipient/tickLower/tickUpper position
-    /// @dev The caller of this method receives a callback in the form of IUniswapV3MintCallback#uniswapV3MintCallback
-    /// in which they must pay any token0 or token1 owed for the liquidity. The amount of token0/token1 due depends
-    /// on tickLower, tickUpper, the amount of liquidity, and the current price.
-    /// @param recipient The address for which the liquidity will be created
-    /// @param tickLower The lower tick of the position in which to add liquidity
-    /// @param tickUpper The upper tick of the position in which to add liquidity
-    /// @param amount The amount of liquidity to mint
-    /// @param data Any data that should be passed through to the callback
-    /// @return amount0 The amount of token0 that was paid to mint the given amount of liquidity. Matches the value in the callback
-    /// @return amount1 The amount of token1 that was paid to mint the given amount of liquidity. Matches the value in the callback
-    function mint(
-        address recipient,
-        int24 tickLower,
-        int24 tickUpper,
-        uint128 amount,
-        bytes calldata data
-    ) external returns (uint256 amount0, uint256 amount1);
-
-##
-
-## [NC-14] Constants should be defined rather than calculating every time
-
-Defining constants can make the code more readable and easier to maintain. By giving a name to a constant value, it can make the code more self-explanatory and help other developers understand the purpose and intent of the code more easily
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManagerStorage.sol
-
-17: bytes32 public constant DOMAIN_TYPEHASH =
-        keccak256("EIP712Domain(string name,uint256 chainId,address verifyingContract)");
-
-20: bytes32 public constant DEPOSIT_TYPEHASH =
-        keccak256("Deposit(address strategy,address token,uint256 amount,uint256 nonce,uint256 expiry)");
-```
-[StrategyManagerStorage.sol#L17-L18](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManagerStorage.sol#L17-L18)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-23: uint256 constant internal PAUSE_ALL = type(uint256).max;
-
-```
-[Pausable.sol#L23](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L23)
-
-##
-
-## [NC-15] Use constants instead of type(uintx).max
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L23
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L82-L83
-
-##
-
-## [NC-16] Tokens accidentally sent to the contract cannot be recovered
+## [NC-9] Tokens accidentally sent to the contract cannot be recovered
 
 It can’t be recovered if the tokens accidentally arrive at the contract address, which has happened to many popular projects, so I recommend adding a recovery code to your critical contracts.
 
@@ -717,25 +491,10 @@ Add this code:
 }
 
 ```
-##
-
-## [NC-17] Add a timelock to critical functions
-
-It is a good practice to give time for users to react and adjust to critical changes. A timelock provides more guarantees and reduces the level of trust required, thus decreasing risk for users. It also indicates that the project is legitimate (less risk of a malicious owner making a sandwich attack on a user). Consider adding a timelock to:
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-587: function setStrategyWhitelister(address newStrategyWhitelister) external onlyOwner {
-        _setStrategyWhitelister(newStrategyWhitelister);
-    }
-
-```
-[StrategyManager.sol#L587-L589](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L587-L589)
 
 ##
 
-## [NC-18] NatSpec comments should be increased in contracts
+## [NC-10] NatSpec comments should be increased in contracts
 
 Context
 All Contracts
@@ -750,36 +509,7 @@ NatSpec comments should be increased in contracts.
 
 ##
 
-## [NC-19] Not recommended to use numbers in function names
 
-Tt can make the function name less descriptive and harder to understand. It's better to use a descriptive title that accurately reflects the purpose of the function. This can make the code more readable and understandable for others who may be reviewing or working with the code
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L160
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L150
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L140
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L130
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L80
-
-https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/Merkle.sol#L99
-
-##
-
-## [NC-20] For critical changes emit both old and new values
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPodManager.sol
-
-186: function _updateBeaconChainOracle(IBeaconChainOracle newBeaconChainOracle) internal {
-        beaconChainOracle = newBeaconChainOracle;
-        emit BeaconOracleUpdated(address(newBeaconChainOracle));
-    }
-
-```
-[EigenPodManager.sol#L186-L189](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPodManager.sol#L186-L189)
 
 
 
