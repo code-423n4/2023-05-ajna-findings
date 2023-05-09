@@ -229,6 +229,110 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
+## [G-24] It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied
+
+> Instances (22)
+
+> Gas Saved (1062)
+
+As per remix [sample tests](https://gist.github.com/sathishpic22/71fdb56db3a651e93aa410bc4486f226)
+
+- If state variable its possible to saves 600 gas 
+
+- If normal local variable its possible to save 22 gas  
+
+> Instances ()
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol 
+
+Local variables
+
+181: for (uint256 i = 0; i < indexesLength; ) {
+364: for (uint256 i = 0; i < indexesLength; ) {
+471: uint256 filteredIndexesLength = 0;
+476: for (uint256 i = 0; i < indexesLength; ) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#LL181C9-L181C51
+
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-core/src/RewardsManager.sol
+
+Local variables
+
+163: for (uint256 i = 0; i < fromBucketLength; ) {
+229: for (uint256 i = 0; i < positionIndexes.length; ) {
+290: for (uint256 i = 0; i < positionIndexes.length; ) {
+440: for (uint256 i = 0; i < positionIndexes_.length; ) {
+680: for (uint256 i = 0; i < indexes_.length; ) {
+704: for (uint256 i = 0; i < indexes_.length; ) {
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#LL704C17-L704C61
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+62: for (uint256 i = 0; i < targets_.length; ++i) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#LL62C9-L62C56
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+State Variable
+
+64: uint24 internal _currentDistributionId = 0;
+
+Local variables
+
+208: for (uint i = 0; i < numFundedProposals; ) {
+324: for (uint i = 0; i < numProposalsInSlate; ) {
+434: for (uint i = 0; i < numProposalsInSlate_; ) {
+468: for (uint i = 0; i < numProposals; ) {
+491: for (uint i = 0; i < proposalIdSubset_.length;) {
+549: for (uint256 i = 0; i < numVotesCast; ) {
+582: for (uint256 i = 0; i < numVotesCast; ) {
+770: for (int256 i = 0; i < arrayLength;) {
+797: for (int256 i = 0; i < numVotesCast; ) {
+848: for (uint256 i = 0; i < numVotesCast; ) {
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L63
+
+##
+
+## [G-25] Checking Non-Zero Amount Values Before Transferring to Minimize or avoid unnecessary Execution Costs
+
+> Instances ()
+
+Checking the value of the amount to ensure it is non-zero before transferring it can help you avoid unnecessary execution costs and ensure that the transfer is successful.
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
+
+ fundingAmount_ value not checked with non zero. If the fundingAmount_ is zero the over all executions is waste of gas.
+
+ token.safeTransferFrom(msg.sender, address(this), fundingAmount_);
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#LL67C8-L67C75
+
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+rewardClaimed_ value not checked with non zero
+
+264: IERC20(ajnaTokenAddress).safeTransfer(msg.sender, rewardClaimed_);
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#LL264C9-L264C75
+
+##
+
 ## [G-] SUPERFLUOUS EVENT FIELDS
 
 block.timestamp and block.number are added to event information by default so adding them manually wastes gas
@@ -628,144 +732,41 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-24] It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied
+## [G-29] Do not calculate constant variables
 
-> Instances (15)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-38:  uint8 internal constant PAUSED_DEPOSITS = 0;
-358: for (uint256 i = 0; i < strategies.length;) {
-498: for (uint256 i = 0; i < strategiesLength;) {
-560: for (uint256 i = 0; i < strategiesLength;) {
-724: uint256 j = 0;
-780: for (uint256 i = 0; i < strategiesLength;) {
-791: for (uint256 i = 0; i < strategiesLength;) {
-861: for (uint256 i = 0; i < strategiesLength;) {
-
-```
-[StrategyManager.sol#L358](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L358)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/libraries/BeaconChainProofs.sol
-
-133: for (uint256 i = 0; i < NUM_BEACON_BLOCK_HEADER_FIELDS; ++i) {
-143: for (uint256 i = 0; i < NUM_BEACON_STATE_FIELDS; ++i) {
-153: for (uint256 i = 0; i < NUM_VALIDATOR_FIELDS; ++i) {
-163: for (uint256 i = 0; i < ETH1_DATA_FIELD_TREE_HEIGHT; ++i) {
-
-
-```
-[BeaconChainProofs.sol#L133](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/libraries/BeaconChainProofs.sol#L133)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/DelayedWithdrawalRouter.sol
-
-115: for (uint256 i = 0; i < claimableDelayedWithdrawalsLength; i++) {
-
-```
-[DelayedWithdrawalRouter.sol#L115](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/DelayedWithdrawalRouter.sol#L115)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-22:  uint8 internal constant PAUSED_DEPOSITS = 0;
-
-```
-[StrategyBase.sol#L22](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L22)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-22: uint256 constant internal UNPAUSE_ALL = 0;
-
-```
-[Pausable.sol#L22](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L22)
-
-##
-
-## [G-25] Checking Non-Zero Amount Values Before Transferring to Minimize or avoid unnecessary Execution Costs
-
-> Instances (4)
-
-Checking the value of the amount to ensure it is non-zero before transferring it can help you avoid unnecessary execution costs and ensure that the transfer is successful.
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/strategies/StrategyBase.sol
-
-155: underlyingToken.safeTransfer(depositor, amountToSend);
-
-```
-[StrategyBase.sol#L155](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/strategies/StrategyBase.sol#L155)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManager.sol
-
-661: token.safeTransferFrom(msg.sender, address(strategy), amount);
-664: shares = strategy.deposit(token, amount);
-
-```
-[StrategyManager.sol#L661](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManager.sol#L661)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/pods/EigenPod.sol
-
-450:  _sendETH(recipient, amountWei);
-
-```
-[EigenPod.sol#L450](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/pods/EigenPod.sol#L450)
-
-
-##
-
-## [G-27] Remove unused modifiers code to reduce the deployment cost
-
-> Instances (2)
-
-```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
-
-43: modifier whenNotPaused() {
-        require(_paused == 0, "Pausable: contract is paused");
-        _;
-    }
-
-49: modifier onlyWhenNotPaused(uint8 index) {
-        require(!paused(index), "Pausable: index is paused");
-        _;
-    }
-
-```
-[Pausable.sol#L43-L52](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L43-L52)
-
-
-##
-
-## [G-29] Do not calculate constants variables
-
-> Instances (3)
+> Instances ()
 
 Due to how constant variables are implemented (replacements at compile-time), an expression assigned to a constant variable is recomputed each time that the variable is used, which wastes some gas
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/core/StrategyManagerStorage.sol
+FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-17: bytes32 public constant DOMAIN_TYPEHASH =
-        keccak256("EIP712Domain(string name,uint256 chainId,address verifyingContract)");
+46: uint256 internal constant REWARD_CAP = 0.8 * 1e18;
+50: uint256 internal constant UPDATE_CAP = 0.1 * 1e18;
+55: uint256 internal constant REWARD_FACTOR = 0.5 * 1e18;
+59: uint256 internal constant UPDATE_CLAIM_REWARD = 0.05 * 1e18;
 
-20: bytes32 public constant DEPOSIT_TYPEHASH =
-        keccak256("Deposit(address strategy,address token,uint256 amount,uint256 nonce,uint256 expiry)");
 ```
-[StrategyManagerStorage.sol#L17-L18](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/core/StrategyManagerStorage.sol#L17-L18)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#LL46C4-L46C55
+
 
 ```solidity
-FILE: 2023-04-eigenlayer/src/contracts/permissions/Pausable.sol
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-23: uint256 constant internal PAUSE_ALL = type(uint256).max;
+28:  bytes32 internal constant DESCRIPTION_PREFIX_HASH_EXTRAORDINARY = keccak256(bytes("Extraordinary Funding: "));
 
 ```
-[Pausable.sol#L23](https://github.com/code-423n4/2023-04-eigenlayer/blob/5e4872358cd2bda1936c29f460ece2308af4def6/src/contracts/permissions/Pausable.sol#L23)
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L28
+
+```solidity
+FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
+
+27: uint256 internal constant GLOBAL_BUDGET_CONSTRAINT = 0.03 * 1e18;
+51: bytes32 internal constant DESCRIPTION_PREFIX_HASH_STANDARD = keccak256(bytes("Standard Funding: "));
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#LL27C4-L27C70
+
 
 
 
