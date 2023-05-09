@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": "In case of insufficient balance of the contract, the contract will issue a part of the reward but count as having issued the full rewards",
+  "issueId": 186,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/186"
+}
