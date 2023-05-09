@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hasmama",
+  "risk": "3",
+  "title": "High Severity Vulnerability in Maths Library - wsqrt Function",
+  "issueId": 191,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/191"
+}
