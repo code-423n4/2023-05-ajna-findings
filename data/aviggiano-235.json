@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "aviggiano",
+  "risk": "2",
+  "title": "PositionManager.transferFromWithPermit does not validate if NFT contract owner supports ERC-1271 and reverts unexpectedly",
+  "issueId": 235,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/235"
+}
