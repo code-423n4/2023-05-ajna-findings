@@ -41,3 +41,9 @@ https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/uti
 --- \n
 
 3. reedemPositions should be renamed to redeemPositions on PositionManager.sol
+
+--- \n
+
+4. There is no way to update the tokenIdsAllowed in ERC721Pool. However the ERC721 might have increasing tokenId, or the deployer simply want to allow any tokenId from this collection to be eligible. However this is not feasible in the current setting.
+
+Recommendation: Allow a way to set all tokenId as allowed for a ERC721Pool
