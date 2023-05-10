@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "BPZ",
+  "risk": "3",
+  "title": "User can exponentially increase the value of their position through the memorializePositions function",
+  "issueId": 256,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/256"
+}
