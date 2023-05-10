@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "3",
+  "title": "`PositionManager.moveLiquidity` The function may transfer less liquidity than intended, but it still calculates the transfer as if it were fully completed.",
+  "issueId": 232,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/232"
+}
