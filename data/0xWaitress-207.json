@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "updateBucketExchangeRatesAndClaim has no check on the address of the pool",
+  "issueId": 207,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/207"
+}
