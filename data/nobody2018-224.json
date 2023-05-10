@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "nobody2018",
+  "risk": "2",
+  "title": "StandardFunding.fundingVote should not allow users who didn't vote in screening stage to vote",
+  "issueId": 224,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/224"
+}
