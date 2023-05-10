@@ -1,38 +1,38 @@
+## GAS OPTIMIZATIONS 
+
+Gas usage is determined by EVM opcodes and Remix sample tests, improving the overall user experience and reducing transaction fees for users
+
 ##
 
 | Gas Count| Issues| Instances| Gas Saved|
 |-------|-----|--------|--------|
-| [G-1] | Use uint256(1)/uint256(2) instead for true and false boolean states  | 7 | 140000 |
-| [G-2] | Using storage instead of memory for structs/arrays saves gas  | 11 | 23000 |
-| [G-3] | For events use 3 indexed rule to save gas  | 18 | - |
-| [G-4] | Lack of input value checks cause a redeployment if any human/accidental errors  | 3 |- |
-| [G-5] | Use nested if and, avoid multiple check combinations  | 2 | 18 |
-| [G-6] | Unnecessary look up in if condition | 3 | 27 |
-| [G-7] | Functions should be used instead of modifiers to save gas  | 7 | - |
-| [G-8] | Sort Solidity operations using short-circuit mode  | 3 | - |
-| [G-9] | Use assembly to check for address(0) | 12 | 72 |
-| [G-10] | Shorthand way to write if / else statement can reduce the deployment cost  | 7 | - |
-| [G-11] | require() or revert() statements that check input arguments should be at the top of the function|4| - |
-| [G-12] | internal functions not called by the contract should be removed to save deployment gas  | 9 | - |
-| [G-13] | Modifiers or private functions only called once can be inlined to save gas | 6 | 300 |
-| [G-14] | NOT USING THE NAMED RETURN VARIABLES WHEN A FUNCTION RETURNS, WASTES DEPLOYMENT GAS  | 2 | - |
-| [G-15] | Use constants instead of type(uintx).max  | 3 | - |
-| [G-16] | Use assembly to assign address state variables  | 5 | - |
-| [G-17] | Use solidity version 0.8.19 to gain some gas boost  | 24 | - |
-| [G-18] | Shorten the array rather than copying to a new one   | 10 | - |
-| [G-19] | abi.encode() is less efficient than abi.encodepacked() | 6 | - |
-| [G-20] | Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function | 8 | - |
-| [G-21] | Use hardcode address instead address(this) | 4 | - |
-| [G-22] | Public Functions To External | 1 | - |
-| [G-23] | Non-usage of specific imports | - | - |
-| [G-24] |It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied|15|- |
-| [G-25] | Checking Non-Zero Amount Values Before Transferring to Minimize or avoid unnecessary Execution Costs  | 5 | - |
-| [G-26] | Don't declare the variables inside the loops | 1 | - |
-| [G-27] | Remove unused modifiers code to reduce the deployment cost | 2 | - |
-| [G-28] | Remove the initializer modifier | 5 | 50000 |
-| [G-29] | Do not calculate constants variables | 3 | - |
-| [G-30] | Using calldata instead of memory for read-only arguments in external functions saves gas | 1| 60 |
-| [G-31] | State variables can be packed into fewer storage slots | 1| 20000 |
+| [G-1] | Using bools for storage incurs overhead  | 3 | 60000 |
+| [G-2] | USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS | 20 | 2400 |
+| [G-3] | Structs can be packed into fewer storage slots  | 1 | 2000 |
+| [G-4] | <x> += <y>/<x> -= <y> costs more gas than <x> = <x> + <y>/<x> = <x> - <y> for state variables| 14 |182 |
+| [G-5] | It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied| 22 |1062|
+| [G-6] | Checking Non-Zero Amount Values Before Transferring to Minimize unnecessary Execution Costs|2 | - |
+| [G-7] | SUPERFLUOUS EVENT FIELDS  | 2 | - |
+| [G-8] | For events use 3 indexed rule to save gas  | 5 | - |
+| [G-9] | Use nested if and, avoid multiple check combinations | 6 | 54 |
+| [G-10] | Unnecessary look up in if condition  | 10 | - |
+| [G-11] | Use assembly to check for address(0) |1| 6 |
+| [G-12] | Shorthand way to write if / else statement can reduce the deployment cost  | 2 | - |
+| [G-13] | internal functions not called by the contract should be removed to save deployment gas | 2 | - |
+| [G-14] | private functions only called once can be inlined to save gas  | 1 | 50 |
+| [G-15] | Use solidity version 0.8.19 to gain some gas boost  | - | - |
+| [G-16] | Shorten the array rather than copying to a new one  | 4 | - |
+| [G-17] | abi.encode() is less efficient than abi.encodepacked()  | 9 | - |
+| [G-18] | Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function   | 2 | - |
+| [G-19] | Public Functions To External | 1 | - |
+| [G-20] | Do not calculate constant variables | 7 | - |
+
+
+### Total Gas Results 
+
+| Total Instances | Gas Saved |
+|----------|----------|
+|116   | 65754  |
 
 
 ##
@@ -41,9 +41,9 @@
 
 ## [G-1] Using bools for storage incurs overhead
 
-> Instances(3) 
+- Instances(3) 
 
-> Approximate gas saved: 60000 gas 
+- Approximate gas saved: 60000 gas 
 
 ```solidity
     // Booleans are more expensive than uint256 or any type that takes up a full
@@ -80,18 +80,29 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-] USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS 
+## [G-2] USING CALLDATA INSTEAD OF MEMORY FOR READ-ONLY ARGUMENTS IN EXTERNAL FUNCTIONS SAVES GAS 
+
+- Instances (20)
+
+- Approximate gas saved: 2400 gas 
 
 calldata must be used when declaring an external function's dynamic parameters
 
-When a function with a memory array is called externally, the abi.decode ()  step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. 
+When a function with a memory array is called externally, the abi.decode() step has to use a for-loop to copy each index of the calldata to the memory index. Each iteration of this for-loop costs at least 60 gas (i.e. 60 * <mem_array>.length). Using calldata directly, obliviates the need for such a loop in the contract code and runtime execution. Note that even if an interface defines a function as having memory arguments, it’s still valid for implementation contracs to use calldata arguments instead.
+
+If the array is passed to an internal function which passes the array to another internal function where the array is modified and therefore memory is used in the external call, it’s still more gass-efficient to use calldata when the external function uses modifiers, since the modifiers may prevent the internal functions from being called. Structs have the same overhead as an array of length one
+
+Note that I’ve also flagged instances where the function is public but can be marked as external since it’s not called by the contract, and cases where a constructor is involved
 
 ```solidity
 FILE: 2023-05-ajna/ajna-grants/src/grants/GrantFund.sol
 
-23: address[] memory targets_,
-24: uint256[] memory values_,
-25: bytes[] memory calldatas_,
++ 23: address[] calldata targets_,
++ 24: uint256[] calldata values_,
++ 25: bytes[] calldata  calldatas_,
+- 23: address[] memory targets_,
+- 24: uint256[] memory values_,
+- 25: bytes[] memory calldatas_,
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/GrantFund.sol#L23-L25
@@ -99,8 +110,10 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 ```solidity
 FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
 
-137: uint256[] memory fromBuckets_,
-138: uint256[] memory toBuckets_,
+- 137: uint256[] calldata fromBuckets_,
+- 138: uint256[] calldata toBuckets_,
++ 137: uint256[] memory fromBuckets_,
++ 138: uint256[] memory toBuckets_,
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/RewardsManager.sol#L137-L138
@@ -108,13 +121,19 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 ```solidity
 FILE: 2023-05-ajna/ajna-grants/src/grants/base/ExtraordinaryFunding.sol
 
-57: address[] memory targets_,
-58: uint256[] memory values_,
-59: bytes[] memory calldatas_,
++ 57: address[] calldata targets_,
++ 58: uint256[] calldata values_,
++ 59: bytes[] calldata  calldatas_,
+- 57: address[] memory targets_,
+- 58: uint256[] memory values_,
+- 59: bytes[] memory calldatas_,
 
-87: address[] memory targets_,
-88: uint256[] memory values_,
-89: bytes[] memory calldatas_,
++ 87: address[] calldata targets_,
++ 88: uint256[] calldata values_,
++ 89: bytes[] calldata calldatas_,
+- 87: address[] memory targets_,
+- 88: uint256[] memory values_,
+- 89: bytes[] memory calldatas_,
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L57-L59
@@ -122,17 +141,26 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 ```solidity
 FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
 
-344: address[] memory targets_,
-345: uint256[] memory values_,
-346: bytes[] memory calldatas_,
 
-367: address[] memory targets_,
-368: uint256[] memory values_,
-369: bytes[] memory calldatas_,
++ 344: address[] calldata targets_,
++ 345: uint256[] calldata values_,
++ 346: bytes[] calldata calldatas_,
+- 344: address[] memory targets_,
+- 345: uint256[] memory values_,
+- 346: bytes[] memory calldatas_,
 
-520: FundingVoteParams[] memory voteParams_
++ 367: address[] calldata targets_,
++ 368: uint256[] calldata values_,
++ 369: bytes[] calldata calldatas_,
+- 367: address[] memory targets_,
+- 368: uint256[] memory values_,
+- 369: bytes[] memory calldatas_,
 
-573: ScreeningVoteParams[] memory voteParams_
++ 520: FundingVoteParams[] calldata voteParams_
+- 520: FundingVoteParams[] memory voteParams_
+
++ 573: ScreeningVoteParams[] calldata voteParams_
+- 573: ScreeningVoteParams[] memory voteParams_
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L344-L346
@@ -142,7 +170,11 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-2] Structs can be packed into fewer storage slots
+## [G-3] Structs can be packed into fewer storage slots
+
+- Instances (1)
+
+- Approximate gas saved: 2000 gas  
 
 Each slot saved can avoid an extra Gsset (20000 gas) for the first setting of the struct.
 
@@ -174,7 +206,11 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-] <x> += <y>/<x> -= <y> costs more gas than <x> = <x> + <y>/<x> = <x> - <y> for state variables  
+## [G-4] <x> += <y>/<x> -= <y> costs more gas than <x> = <x> + <y>/<x> = <x> - <y> for state variables 
+
+- Instances (14)
+
+- Approximate gas saved: 182 gas   
 
 FOR EVERY CALL CAN SAVE 13 GAS
 
@@ -229,19 +265,17 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-24] It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied
+## [G-5] It Costs More Gas To Initialize Variables To Zero Than To Let The Default Of Zero Be Applied
 
-> Instances (22)
+- Instances (22)
 
-> Gas Saved (1062)
+- Approximate gas saved: 1062 gas 
 
 As per remix [sample tests](https://gist.github.com/sathishpic22/71fdb56db3a651e93aa410bc4486f226)
 
 - If state variable its possible to saves 600 gas 
 
 - If normal local variable its possible to save 22 gas  
-
-> Instances ()
 
 ```solidity
 FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol 
@@ -304,9 +338,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-25] Checking Non-Zero Amount Values Before Transferring to Minimize or avoid unnecessary Execution Costs
+## [G-6] Checking Non-Zero Amount Values Before Transferring to Minimize or avoid unnecessary Execution Costs
 
-> Instances ()
+- Instances (2)
 
 Checking the value of the amount to ensure it is non-zero before transferring it can help you avoid unnecessary execution costs and ensure that the transfer is successful.
 
@@ -333,7 +367,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-] SUPERFLUOUS EVENT FIELDS
+## [G-7] SUPERFLUOUS EVENT FIELDS
+
+- Instances (2)
 
 block.timestamp and block.number are added to event information by default so adding them manually wastes gas
 
@@ -355,9 +391,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-3] For events use 3 indexed rule to save gas
+## [G-8] For events use 3 indexed rule to save gas
 
-> Instances(5)
+- Instances(5)
 
 Need to declare 3 indexed fields for event parameters. If the event parameter is less than 3 should declare all event parameters indexed
 
@@ -410,11 +446,11 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-5] Use nested if and, avoid multiple check combinations
+## [G-9] Use nested if and, avoid multiple check combinations
 
-> Instances(6)
+- Instances(6)
 
-> Approximate gas saved : 54 gas 
+- Approximate gas saved : 54 gas 
 
 Using nested is cheaper than using && multiple check combinations. There are more advantages, such as easier to read code and better coverage reports.
 
@@ -442,9 +478,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-6] Unnecessary look up in if condition
+## [G-10] Unnecessary look up in if condition
 
-> Instances(10)
+- Instances(10)
 
 If the || condition isn’t required, the second condition will have been looked up unnecessarily.
 
@@ -490,11 +526,11 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-9] Use assembly to check for address(0)
+## [G-11] Use assembly to check for address(0)
 
-> Instances(1)
+- Instances(1)
 
-> Approximate gas saved : 6 gas
+- Approximate gas saved : 6 gas
 
 Saves 6 gas per instance
 
@@ -508,9 +544,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-10] Shorthand way to write if / else statement can reduce the deployment cost
+## [G-12] Shorthand way to write if / else statement can reduce the deployment cost
 
-> Instances(2)
+- Instances(2)
 
 ```solidity
 FILE: 2023-05-ajna/ajna-core/src/RewardsManager.sol
@@ -554,7 +590,7 @@ epoch_ != stakingEpoch_? bucketRate = bucketExchangeRates[ajnaPool_][bucketIndex
 ```
 ##
 
-## [G-12] internal functions not called by the contract should be removed to save deployment gas
+## [G-13] internal functions not called by the contract should be removed to save deployment gas
 
 > Instances(2)
 
@@ -580,11 +616,11 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-13] private functions only called once can be inlined to save gas
+## [G-14] private functions only called once can be inlined to save gas
 
-> Instances (1)
+- Instances (1)
 
-> Approximate gas saved : 50 gas
+- Approximate gas saved : 50 gas
 
 ITs possible to save 40-50 gas
 
@@ -598,7 +634,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-17] Use solidity version 0.8.19 to gain some gas boost
+## [G-15] Use solidity version 0.8.19 to gain some gas boost
 
 CONTEXT
 ALL IN SCOPE CONTRACTS
@@ -633,9 +669,9 @@ FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
 ```
 ##
 
-## [G-18] Shorten the array rather than copying to a new one
+## [G-16] Shorten the array rather than copying to a new one
 
-> Instances ()
+> Instances (4)
 
 Inline-assembly can be used to shorten the array by changing the length slot, so that the entries don't have to be copied to a new, shorter array
 
@@ -655,9 +691,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/6995f24bdf9244fa35880dda21519ffc
 
 ##
 
-## [G-19] abi.encode() is less efficient than abi.encodepacked()
+## [G-17] abi.encode() is less efficient than abi.encodepacked()
 
-> Instances ()
+- Instances (9)
 
 [See for more information:](https://github.com/ConnorBlockchain/Solidity-Encode-Gas-Comparison)
 
@@ -692,9 +728,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-20] Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function
+## [G-18] Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function
 
-> Instances()
+- Instances(2)
 
 Saves deployment costs
 
@@ -714,9 +750,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-22] Public Functions To External
+## [G-19] Public Functions To External
 
-> Instances ()
+- Instances (1)
 
 The following functions could be set external to save gas and improve code quality. External call cost is less expensive than of public functions.
 
@@ -732,9 +768,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [G-29] Do not calculate constant variables
+## [G-20] Do not calculate constant variables
 
-> Instances ()
+- Instances (7)
 
 Due to how constant variables are implemented (replacements at compile-time), an expression assigned to a constant variable is recomputed each time that the variable is used, which wastes some gas
 
