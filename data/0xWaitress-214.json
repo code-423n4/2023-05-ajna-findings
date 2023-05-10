@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "malicious actors can approve other users and rug them since check on allowance approval mapping is accessed wrongly in transferLP",
+  "issueId": 214,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/214"
+}
