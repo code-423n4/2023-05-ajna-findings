@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "Unsecured Downcasting of uint256: Risks and Consequences",
+  "issueId": 250,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/250"
+}
