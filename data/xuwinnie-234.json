@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "xuwinnie",
+  "risk": "3",
+  "title": "Attacker can drain all minted LP by repeatedly increaseLPAllowance (for a small amount) and memorializePositions",
+  "issueId": 234,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/234"
+}
