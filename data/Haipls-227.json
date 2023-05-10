@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "2",
+  "title": "Unsafe casting from `uint256` to `uint128` in RewardsManager",
+  "issueId": 227,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/227"
+}
