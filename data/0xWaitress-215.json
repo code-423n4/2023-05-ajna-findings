@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xWaitress",
+  "risk": "3",
+  "title": "ERC721Pool borrower can be over-liquidated through re-entrency of the take function.",
+  "issueId": 215,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/215"
+}
