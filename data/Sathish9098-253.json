@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "Potential Risk of Permanently Locked Tokens When Target Contract Does Not Exist During Loop Execution",
+  "issueId": 253,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/253"
+}
