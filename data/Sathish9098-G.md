@@ -26,6 +26,10 @@ Gas usage is determined by EVM opcodes and Remix sample tests, improving the ove
 | [G-18] | Duplicated require()/revert()/IF Checks Should Be Refactored To A Modifier Or Function   | 2 | - |
 | [G-19] | Public Functions To External | 1 | - |
 | [G-20] | Do not calculate constant variables | 7 | - |
+| [G-21] | Convert the .call recursive calls to batch operations to save large volume of gas | - | - |
+| [G-22] | EnumerableSet.UintSet can have gas cost implications | - | - |
+
+
 
 
 ### Total Gas Results 
@@ -803,6 +807,39 @@ FILE: 2023-05-ajna/ajna-grants/src/grants/base/StandardFunding.sol
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#LL27C4-L27C70
 
+##
+
+## [G-21] Convert the .call recursive calls to batch operations to save large volume of gas
+
+This allows to combine multiple calls into a single transaction, optimizing gas usage and reducing the overall cost
+
+```solidity
+FILE: Breadcrumbs2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
+
+62: for (uint256 i = 0; i < targets_.length; ++i) {
+            (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
+            Address.verifyCallResult(success, returndata, errorMessage);
+        }
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#LL62C9-L65C10
+
+##
+
+## [G-22] EnumerableSet.UintSet can have gas cost implications
+
+When the set grows in size. As the number of elements increases, the gas required for set operations like adding or removing elements may also increase
+
+```solidity
+FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
+
+59: mapping(uint256 => EnumerableSet.UintSet)        internal positionIndexes;
+
+```
+https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L59
+
+
+
 
 
 
@@ -814,19 +851,6 @@ L
 The instances below point to the second+ call of the function within a single function
 
 
-
-[G-] State variables can be packed into fewer storage slots
-
-The EVM works with 32 byte words. Variables less than 32 bytes can be declared next to eachother in storage and this will pack the values together into a single 32 byte storage slot (if the values combined are <= 32 bytes). If the variables packed together are retrieved together in functions we will effectively save ~2000 gas with every subsequent SLOAD for that storage slot. This is due to us incurring a Gwarmaccess (100 gas) versus a Gcoldsload (2100 gas).
-
-
-[G‑19]  Functions guaranteed to revert when called by normal users can be marked payable        36      756
-
-[G-20] Possible to use arrays instead of EnumerableSet 
-
-Operations involving EnumerableSet can consume more gas compared to simple array operations. This is because EnumerableSet uses additional storage and requires extra operations to maintain the set's integrity and support enumeration. As a result, using EnumerableSet can increase the overall cost of your smart contract transactions
-
->0 consume less gas than !=
 
 
 
