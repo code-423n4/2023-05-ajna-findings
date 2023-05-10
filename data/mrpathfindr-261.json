@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "mrpathfindr",
+  "risk": "3",
+  "title": "Liquidity Owner can move Liquidity after they've already done so. (i.e Reentrancy)",
+  "issueId": 261,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/261"
+}
