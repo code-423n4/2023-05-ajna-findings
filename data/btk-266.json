@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "btk",
+  "risk": "2",
+  "title": "#StandardFunding._standardProposalState() can retrun an inactive proposal as active",
+  "issueId": 266,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/266"
+}
