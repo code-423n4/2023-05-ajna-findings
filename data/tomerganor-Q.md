@@ -1,0 +1,1 @@
+https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/libraries/Maths.sol#L9 when x in MIN_INT then the function will revert when it should not
