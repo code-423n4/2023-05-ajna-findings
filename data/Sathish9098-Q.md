@@ -11,11 +11,11 @@ Low-level findings should not be ignored, as they can still pose potential risks
 | [L-3]| LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG | 1 |
 | [L-4]| Lack of sanity/threshold/limit checks for uint256    | 1 |
 | [L-5]| Gas griefing/theft is possible on unsafe external call | 1 |
-| [L-6]| Failed Function Call Could Occur Without Contract Existence Check  | 1 |
-| [L-7]| Project has NPM Dependency which uses a vulnerable version : @openzeppelin  | - |
-| [L-8]| Project Upgrade and Stop Scenario should be  | 8 |
-| [L-9]| Lack of nonReentrant modifiers for critical external functions   | 4 |
-| [L-10]| Missing Event for critical updates | 1 |
+| [L-6]| Project has NPM Dependency which uses a vulnerable version : @openzeppelin  | - |
+| [L-7]| Project Upgrade and Stop Scenario should be  | - |
+| [L-8]| Lack of nonReentrant modifiers for critical external functions   | 4 |
+| [L-9]| Missing Event for critical updates | 1 |
+| [L-10]| EnumerableSet.UintSet should be avoided  | - |
 
 
 # NON CRITICAL FINDINGS
@@ -136,31 +136,7 @@ FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
 
 ##
 
-## [L-6] Failed Function Call Could Occur Without Contract Existence Check
-
-Performing a low-level calls without confirming contract’s existence (not yet deployed or have been destructed) could return success even though no function call was executed. 
-
-```solidity
-FILE: 2023-05-ajna/ajna-grants/src/grants/base/Funding.sol
-
-63: (bool success, bytes memory returndata) = targets_[i].call{value: values_[i]}(calldatas_[i]);
-
-```
-https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/Funding.sol#L63
-
-Recommended Mitigation:
-
-```solidity
-
-  assembly {
-        codeSize := extcodesize(target[i])
-    }
-
-    require(codeSize > 0, "Contract does not exist");
-
-```
-
-## [L-7] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
+## [L-6] Project has NPM Dependency which uses a vulnerable version : @openzeppelin
 
 In Ajna grants projects using the vulnerable versions. 
 
@@ -207,7 +183,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [L-8] Project Upgrade and Stop Scenario should be
+## [L-7] Project Upgrade and Stop Scenario should be
 
 At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an ” EMERGENCY STOP (CIRCUIT BREAKER) PATTERN “.
 
@@ -215,7 +191,7 @@ https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.s
 
 ##
 
-## [L-9] Lack of nonReentrant modifiers for critical external functions 
+## [L-8] Lack of nonReentrant modifiers for critical external functions 
 
 Apply the nonReentrant modifier to critical external functions to ensure they are not susceptible to reentrancy attacks
 
@@ -258,7 +234,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
-## [L-10] Missing Event for critical updates
+## [L-9] Missing Event for critical updates
 
 Emitting events for critical updates in your smart contract is a good practice to provide transparency and allow external systems to track and react to important changes. Events serve as a way to communicate the occurrence of significant events within a contract to off-chain systems or other contracts
 
@@ -280,17 +256,21 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 ##
 
+## [L-10] EnumerableSet.UintSet should be avoided 
 
+EnumerableSet.UintSet has following drawbacks 
 
+- Gas Limit Considerations
 
+   - It's important to be mindful of the gas limits imposed by the Ethereum network. If a set operation exceeds the block's gas limit, it will fail, and the transaction will not be processed. Therefore, working with large sets or performing complex operations on sets may require careful gas optimization and potentially breaking down operations into multiple transactions
 
+- Unordered Collection
 
+  - The EnumerableSet.UintSet does not maintain any specific order or sorting of the elements. The elements are stored in an unordered manner based on their insertion order. If you require a specific order or need to iterate through the elements in a particular sequence, you would need to implement additional logic or use a different data structure
 
+- Limited Query Operations
 
-[L-03] Consider using OpenZeppelin’s SafeCast library to prevent unexpected overflows when casting from uint256
-
-
-
+  - While the EnumerableSet.UintSet provides essential operations such as adding, removing, and checking for the existence of values, it does not support more complex query operations out of the box. For example, operations like finding the minimum or maximum value, or performing range queries, would require additional custom logic to be implemented separately
 
 
 ##
