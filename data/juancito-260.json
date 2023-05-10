@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "juancito",
+  "risk": "2",
+  "title": "Adversary can prevent the creation of any extraordinary funding proposal by frontrunning `proposeExtraordinary()`",
+  "issueId": 260,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/260"
+}
