@@ -37,3 +37,7 @@ https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/uti
         return set._values;
     }
 ```
+
+--- \n
+
+3. reedemPositions should be renamed to redeemPositions on PositionManager.sol
