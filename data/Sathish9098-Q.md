@@ -1,54 +1,37 @@
-Report contents changed: Report contents changed:  # LOW FINDINGS
+ # LOW FINDINGS
+
+Low-level findings should not be ignored, as they can still pose potential risks or be indicative of vulnerabilities that could be exploited. It is recommended to address and remediate all identified issues, regardless of their severity, to enhance the overall security and reliability of the smart contract
+
+##
 
 | LOW COUNT| ISSUES | INSTANCES|
 |-------|-----|--------|
-| [L-1]| initialize() functions could be front run  | 6 |
-| [L-2]| Missing Event for initialize  | 2 |
-| [L-3]| Use right way to convert bytes to bytes32 | 1 |
-| [L-4]| Owner can renounce the ownership   | - |
-| [L-5]| LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG  | 2 |
-| [L-6]| OUTDATED COMPILER  | 24 |
-| [L-7]| Lack of Sanity/Threshold/Limit Checks for uint256  | 5 |
-| [L-8]| Function Calls in Loop Could Lead to Denial of Service  | 7 |
-| [L-9]| Project Upgrade and Stop Scenario should be  | - |
-| [L-10]| Front running attacks by the onlyOwner | 1 |
-| [L-11]| Even with the onlyOwner or owner_only modifier, it is best practice to use the re-entrancy pattern| 1 |
-| [L-12]| Unused Modifiers block  | 2 |
-| [L-13]| Insufficient coverage | - |
-| [L-14]| Missing Contract-existence Checks Before Low-level Calls | 2 |
-| [L-15]| Not Completely Using OpenZeppelin upgradable Contracts | - |
-| [L-16]| Use OpenZeppelin PausableUpgradeable instead of Pausable | 4 |
-| [L-17]| Use OpenZeppelin AddressUpgradeable.sol instead of Address.sol | 1 |
+| [L-1]| Event are missing sender information  | 1 |
+| [L-2]| Prevent division by 0  | 1 |
+| [L-3]| LOW LEVEL CALLS WITH SOLIDITY VERSION 0.8.14 CAN RESULT IN OPTIMISER BUG | 1 |
+| [L-4]| Lack of sanity/threshold/limit checks for uint256    | 1 |
+| [L-5]| Gas griefing/theft is possible on unsafe external call | 1 |
+| [L-6]| Failed Function Call Could Occur Without Contract Existence Check  | 1 |
+| [L-7]| Project has NPM Dependency which uses a vulnerable version : @openzeppelin  | - |
+| [L-8]| Project Upgrade and Stop Scenario should be  | 8 |
+| [L-9]| Lack of nonReentrant modifiers for critical external functions   | 4 |
+| [L-10]| Missing Event for critical updates | 1 |
 
 
-
-
-
- # NON CRITICAL FINDINGS
+# NON CRITICAL FINDINGS
 
 | NC COUNT| ISSUES | INSTANCES|
 |-------|-----|--------|
-| [NC-1]| immutable should be uppercase  | 8 |
-| [NC-2]| Missing NATSPEC  | - |
-| [NC-3]| For functions, follow Solidity standard naming conventions (internal function style rule) | 9 |
-| [NC-4]| Need Fuzzing test for unchecked  | 13 |
-| [NC-5]| NO SAME VALUE INPUT CONTROL  | 2 |
-| [NC-6]| According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword  | 5 |
-| [NC-7]| Use SMTChecker   | - |
-| [NC-8]| Assembly Codes Specific – Should Have Comments | 3 |
-| [NC-9]| Shorthand way to write if / else statement| 7 |
-| [NC-10]| Don't use named return variables its confusing  | 2 |
-| [NC-11]| Constants should be in uppercase | 1 |
-| [NC-12]| Shorter inheritance list  | 2 |
-| [NC-13]| Include return parameters in NatSpec comments| - |
-| [NC-14]| Constants should be defined rather than calculating every time   | 3 |
-| [NC-15]| Use constants instead of type(uintx).max | 3 |
-| [NC-16]| Tokens accidentally sent to the contract cannot be recovered  | - |
-| [NC-17]| Add a timelock to critical functions  | 1 |
-| [NC-18]| NatSpec comments should be increased in contracts  | - |
-| [NC-19]| Not recommended to use numbers in function names    | - |
-| [NC-20]| For critical changes emit both old and new values   | - |
-
+| [NC-1]| immutable should be uppercase  | 5 |
+| [NC-2]| Use NATSPEC commands for all contracts   | - |
+| [NC-3]| For functions,Variables follow Solidity standard naming conventions (internal function,Variable style rule) | 5 |
+| [NC-4]| According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword  | 17 |
+| [NC-5]| SMT Checker  | - |
+| [NC-6]| Assembly Codes Specific – Should Have Comments  | 3 |
+| [NC-7]| Shorthand way to write if / else statement   | 2 |
+| [NC-8]| Don't use named return variables its confusing | 14 |
+| [NC-9]| Tokens accidentally sent to the contract cannot be recovered| - |
+| [NC-10]| NatSpec comments should be increased in contracts  | - |
 
 ##
 
@@ -122,7 +105,7 @@ Consider upgrading to at least solidity v0.8.15.
 
 ##
 
-## [L-4] Lack of sanity/threshold/limit checks for uint256 or address(0)
+## [L-4] Lack of sanity/threshold/limit checks for uint256 
 
 Devoid of sanity/threshold/limit checks, critical parameters can be configured to invalid values, causing a variety of issues and breaking expected interactions within/between contracts. Consider adding proper uint256 validation for critical changes and address(0) checks. A worst case scenario would render the contract needing to be re-deployed in the event of human/accidental errors that involve value assignments to immutable variables. If the validation procedure is unclear or too complex to implement on-chain, document the potential issues that could produce invalid values
 
@@ -222,6 +205,7 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/lib/openzeppelin-contracts/contracts/utils/math/SafeCast.sol#L2
 
+##
 
 ## [L-8] Project Upgrade and Stop Scenario should be
 
@@ -293,6 +277,10 @@ executeStandard() execute the proposals once executed particular proposal.execut
 
 ```
 https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-grants/src/grants/base/StandardFunding.sol#L343-L348
+
+##
+
+
 
 
 
@@ -381,7 +369,6 @@ https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab
 
 
 ## [NC-4] According to the syntax rules, use => mapping ( instead of => mapping( using spaces as keyword
-
 
 ```solidity
 FILE: 2023-05-ajna/ajna-core/src/PositionManager.sol
