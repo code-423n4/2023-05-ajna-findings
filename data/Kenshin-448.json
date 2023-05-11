@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Kenshin",
+  "risk": "2",
+  "title": "`startNewDistributionPeriod()` can be front-run before `treasury` is actually funded.",
+  "issueId": 448,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/448"
+}
