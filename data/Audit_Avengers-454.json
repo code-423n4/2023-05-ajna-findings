@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audit_Avengers",
+  "risk": "3",
+  "title": "unstake() function: The unstake function permits the unstaking of multiple position NFTs from the same liquidity pool (LP) by the same lender. This opens the possibility for a lender to claim more Ajna token rewards than they are entitled to by staking and unstaking multiple NFTs associated with the same LP.",
+  "issueId": 454,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/454"
+}
