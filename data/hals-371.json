@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hals",
+  "risk": "3",
+  "title": "PositionManager.sol contract: tokenURI function: anyone can create a position for any NFT.",
+  "issueId": 371,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/371"
+}
