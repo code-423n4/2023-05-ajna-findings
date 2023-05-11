@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Transfer of Tokens Without User Consent in Stake() and Unstake() Functions.",
+  "issueId": 396,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/396"
+}
