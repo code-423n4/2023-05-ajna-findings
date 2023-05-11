@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "bytes032",
+  "risk": "3",
+  "title": "The voting thresholds in Ajna's Extraordinary Funding Mechanism can be manipulated to execute proposals below the expected threshold.",
+  "issueId": 285,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/285"
+}
