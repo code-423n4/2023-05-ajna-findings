@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "bytes032",
+  "risk": "2",
+  "title": "Precision loss in _getDelegateReward dillutes the delegate rewards",
+  "issueId": 333,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/333"
+}
