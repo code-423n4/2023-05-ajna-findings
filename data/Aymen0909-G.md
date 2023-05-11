@@ -7,7 +7,7 @@
 | 1  | Using `storage` instead of `memory` for struct/array saves gas | 8 |
 | 2  | `storage` variable should be cached into `memory` variables instead of re-reading them | 1 |
 | 3  | Use `unchecked` blocks to save gas | 3 |
-| 4  | Use `calldata` instead of `memory` for function parameters type  | 12 |
+| 4  | Use `calldata` instead of `memory` for function parameters type  | 13 |
 | 5  | Multiple address/IDs mappings can be combined into a single mapping of an address/id to a struct | 13 |
 | 6  | `x += y/x -= y` costs more gas than `x = x + y/x = x - y` for state variables  | 10 |
 
@@ -110,7 +110,7 @@ In the code linked above the operation cannot underflow because of the check in 
 
 If a reference type function parameter is read-only, it is cheaper in gas to use calldata instead of memory. Calldata is a non-modifiable, non-persistent area where function arguments are stored, and behaves mostly like memory.
 
-There are 12 instances of this issue:
+There are 13 instances of this issue:
 
 ```solidity
 File: RewardsManager.sol
@@ -131,6 +131,15 @@ File: RewardsManager.sol
 671     function _updateBucketExchangeRates(
             address pool_,
             uint256[] memory indexes_
+        )
+
+File: GrantFund.sol
+
+22      function hashProposal(
+            address[] memory targets_,
+            uint256[] memory values_,
+            bytes[] memory calldatas_,
+            bytes32 descriptionHash_
         )
 
 File: ExtraordinaryFunding.sol
