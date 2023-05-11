@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "bytes032",
+  "risk": "3",
+  "title": "Using memory instead of storage in 'redeemPositions'  will result in incorrect LP Balance",
+  "issueId": 425,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/425"
+}
