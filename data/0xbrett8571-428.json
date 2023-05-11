@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Integer Overflow in executeExtraordinary Function.",
+  "issueId": 428,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/428"
+}
