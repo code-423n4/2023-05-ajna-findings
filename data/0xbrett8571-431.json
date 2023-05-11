@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Risk of Gas Limit Exceedance During Proposal Sorting",
+  "issueId": 431,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/431"
+}
