@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Juntao",
+  "risk": "2",
+  "title": "Position deposit time not updated to 0 after liquidity moving ",
+  "issueId": 325,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/325"
+}
