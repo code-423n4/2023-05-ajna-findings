@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hals",
+  "risk": "3",
+  "title": "RewardsManager.sol contract: ajnaToken\\_ input address isn't checked if it refers to a contract address.",
+  "issueId": 362,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/362"
+}
