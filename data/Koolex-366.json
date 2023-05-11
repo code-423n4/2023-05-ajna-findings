@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "Bucket index from (which liquidity is moved from) shouldn't be removed if the returned redeemed LP is lower than fromPosition.lps",
+  "issueId": 366,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/366"
+}
