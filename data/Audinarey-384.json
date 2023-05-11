@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audinarey",
+  "risk": "3",
+  "title": "Improper implementation of _transferAjnaRewards() function logic leading to possible loss of funds",
+  "issueId": 384,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/384"
+}
