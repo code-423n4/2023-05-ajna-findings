@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "Calling `StandardFunding.startNewDistributionPeriod` function can cause `fundsAvailable` for new distribution period to be less than it should be",
+  "issueId": 290,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/290"
+}
