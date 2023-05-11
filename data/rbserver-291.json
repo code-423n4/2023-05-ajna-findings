@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "`Funding._getVotesAtSnapshotBlocks` function does not take into account user's available votes between snapshot blocks",
+  "issueId": 291,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/291"
+}
