@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "Unchecked increment in calculateRewards function of RewardsManager.sol.",
+  "issueId": 432,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/432"
+}
