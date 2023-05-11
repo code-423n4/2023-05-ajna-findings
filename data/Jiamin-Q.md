@@ -1,0 +1,1 @@
+1. When [moveLiquidity](https://github.com/code-423n4/2023-05-ajna/blob/276942bc2f97488d07b887c8edceaaab7a5c3964/ajna-core/src/PositionManager.sol#L262-L333) is called  `fromPosition.depositTime` is not updated to 0 after liquidity is moved.
