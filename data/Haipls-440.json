@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Haipls",
+  "risk": "3",
+  "title": "Incorrect calculation of the remaining updatedRewards leads to possible underflow error",
+  "issueId": 440,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/440"
+}
