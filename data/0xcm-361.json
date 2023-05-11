@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xcm",
+  "risk": "3",
+  "title": "Users may permanently lose a portion of rewards when claiming rewards if the contract balance is insufficient",
+  "issueId": 361,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/361"
+}
