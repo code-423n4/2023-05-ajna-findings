@@ -70,3 +70,9 @@ https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base
 ```
 
 https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L101
+
+### `ajnaTokenAddress` can be `constant`
+
+As `ajnaTokenAddress` is already initialized and doesn't use `keccak256()`. Also saves 30 gas when deployed.
+
+https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/Funding.sol#L21
