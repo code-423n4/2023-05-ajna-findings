@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "patitonar",
+  "risk": "3",
+  "title": "memorializePositions does not validate that caller is the owner of the token id",
+  "issueId": 327,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/327"
+}
