@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "seeques",
+  "risk": "2",
+  "title": "LPB NFT holder can frontrun the selling of the NFT by redeeming his position",
+  "issueId": 340,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/340"
+}
