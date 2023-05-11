@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audinarey",
+  "risk": "3",
+  "title": "ownership of LP can be transferred to PositionManager contract without updating lp position",
+  "issueId": 416,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/416"
+}
