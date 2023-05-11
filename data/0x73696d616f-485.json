@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "ExtraordinaryFunding may fail due to a decrease in the treasury funds due to a `StandardFunding` new distribution round",
+  "issueId": 485,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/485"
+}
