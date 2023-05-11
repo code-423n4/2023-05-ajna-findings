@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "turvy_fuzz",
+  "risk": "2",
+  "title": "Delegatee can claim delegate reward when challenge Period is still active",
+  "issueId": 492,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/492"
+}
