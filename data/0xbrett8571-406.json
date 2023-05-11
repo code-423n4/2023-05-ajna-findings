@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "Arithmetic Underflow Vulnerability in _getPoolAccumulators Function",
+  "issueId": 406,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/406"
+}
