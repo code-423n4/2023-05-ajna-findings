@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "GG_Security",
+  "risk": "2",
+  "title": "Wrong implementation of hashProposal in GrantFund",
+  "issueId": 427,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/427"
+}
