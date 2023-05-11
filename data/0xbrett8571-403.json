@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xbrett8571",
+  "risk": "3",
+  "title": "In getPoolAccumulators function of Ajna protocol allows for manipulation of token exchange rates and potential loss of funds",
+  "issueId": 403,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/403"
+}
