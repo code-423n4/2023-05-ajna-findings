@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "`StandardFunding` contract's functionalities for proposals with positive `tokensRequested` can be DOS'ed for `_distributions[1]`",
+  "issueId": 297,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/297"
+}
