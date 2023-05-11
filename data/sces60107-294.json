@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sces60107",
+  "risk": "3",
+  "title": "If a user owns 51% of non-treasury tokens, the user can take more than 1% of treasury tokens.",
+  "issueId": 294,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/294"
+}
