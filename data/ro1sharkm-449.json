@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "ro1sharkm",
+  "risk": "2",
+  "title": "Expiration Time Not Checked in moveStakedLiquidity Function",
+  "issueId": 449,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/449"
+}
