@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "3",
+  "title": "`StandardFunding._updateTreasury` function does not take into account voters' delegate rewards when re-adding tokens back to `treasury`",
+  "issueId": 289,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/289"
+}
