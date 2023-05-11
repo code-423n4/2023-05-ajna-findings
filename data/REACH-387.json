@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "REACH",
+  "risk": "3",
+  "title": "Concurrent distributions result in locked tokens within the treasury.",
+  "issueId": 387,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/387"
+}
