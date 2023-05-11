@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "Users are able to call `StandardFunding.claimDelegateReward` function to claim delegate rewards when `block.number` is end block of challenge period in which challenge period is not ended though they should not be allowed to do so",
+  "issueId": 296,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/296"
+}
