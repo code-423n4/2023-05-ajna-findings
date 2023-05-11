@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "yixxas",
+  "risk": "2",
+  "title": "Voters are forced to vote if they want to claim delegation reward, even if they are indifferent to the available proposals",
+  "issueId": 324,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/324"
+}
