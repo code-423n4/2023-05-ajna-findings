@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Krace",
+  "risk": "3",
+  "title": "RewardsManager: Old bucket snapshot info cannot be deleted if positionIndexes is changed before unstaking",
+  "issueId": 317,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/317"
+}
