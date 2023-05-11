@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hals",
+  "risk": "3",
+  "title": "tokenURI function: IPool(poolKey[tokenId_]) should be checked if exists before creating a new NFT position.",
+  "issueId": 374,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/374"
+}
