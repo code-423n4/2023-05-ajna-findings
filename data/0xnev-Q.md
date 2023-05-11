@@ -5,7 +5,7 @@
 | NC |  Non-critical | Non risky findings |
 | R  | Refactor | Code changes |
 
-| Total Found Issues | 17 |
+| Total Found Issues | 14 |
 |:--:|:--:|
 
 ### Low Risk Template
@@ -24,11 +24,8 @@
 | [N-02] | Lender can unexpectedly claim rewards from all existing positions in buckets when `RewardsManager.movingStakedLiquidity ` is called instead of just specified buckets where postions is moved | 1 |
 | [N-03] | User can still memorialize and stake positions to NFT at buckets after they have already move position | 1 |
 | [N-04] | Consider using `block.timestamp` instead of `block.number` | 1 |
-| [N-05] | `<x> += <y>` costs more gas than `<x> = <x> + <y>` for state variables | 1 |
-| [N-06] | Use custom error revert instead of require | 1 |
-| [N-07] | Multiple accesses of a mapping/array should use a local variable cache | 2 |
 
-| Total Non-Critical Issues | 7 |
+| Total Non-Critical Issues | 4 |
 |:--:|:--:|
 
 ### Refactor Issues Template
@@ -343,3 +340,6 @@ address public constant AJNA_TOKEN_ADDRESS = 0x9a96ec9B57Fb64FbC60B423d1f4da7691
 Consider implementing the `private` function `StandardFunding._setNewDistributionId()` in `StandardFunding.startNewDistributionPeriod()` directly since it is only use once in that function.
 
 Could potentially save deployment cost as the function `StandardFunding._setNewDistributionId()` is removed
+
+
+
