@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xSmartContract",
+  "risk": "2",
+  "title": "Logic error in `_transferAjnaRewards` function",
+  "issueId": 498,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/498"
+}
