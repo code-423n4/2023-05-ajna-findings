@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "deadrxsezzz",
+  "risk": "3",
+  "title": "Using block numbers to measure time is different for every EVM chain",
+  "issueId": 350,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/350"
+}
