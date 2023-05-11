@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Jerry0x",
+  "risk": "3",
+  "title": "An expired parameter is required because there may be slippage in the calculation.",
+  "issueId": 415,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/415"
+}
