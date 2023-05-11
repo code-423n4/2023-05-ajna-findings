@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0x73696d616f",
+  "risk": "2",
+  "title": "Stuck tokens if directly transferred to GrantFund.sol ",
+  "issueId": 314,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/314"
+}
