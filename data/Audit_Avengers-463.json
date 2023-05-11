@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audit_Avengers",
+  "risk": "2",
+  "title": "mint() function: an attacker can mint multiple position NFTs for one or more legit Ajna users who have LP in Ajna pools. This should not be possible.",
+  "issueId": 463,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/463"
+}
