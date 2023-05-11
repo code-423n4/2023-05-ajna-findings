@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "sces60107",
+  "risk": "3",
+  "title": "`PositionManager.memorializePositions` record the wrong amount of received LPs",
+  "issueId": 304,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/304"
+}
