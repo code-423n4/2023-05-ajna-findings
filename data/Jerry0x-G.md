@@ -1,0 +1,3 @@
+The function [_getMinimumThresholdPercentage](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L206-L215) limits the maximum length of the _fundedExtraordinaryProposals array to 10.
+
+The data type of [_isSurplusFundsUpdated](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/StandardFunding.sol#L100) is defined as BitMaps. @openzeppelin/contracts/utils/structs/BitMaps.sol
