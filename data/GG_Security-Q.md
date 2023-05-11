@@ -63,3 +63,5 @@ Check that `rewardClaimed_` != 0 before `safeTransfer`.
 [https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L258](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L258)
 
 [https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L348](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L348)
+
+https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L225 (`Transfer` event is also emitted)
