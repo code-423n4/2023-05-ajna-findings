@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audit_Avengers",
+  "risk": "2",
+  "title": "mint() function: Rogue lenders/attackers could mint multiple/endless position NFTs for their SAME Ajna pool deposits/LPs, when they're supposed to be able to mint only one position NFT per lender per LP per pool.",
+  "issueId": 466,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/466"
+}
