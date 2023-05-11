@@ -65,3 +65,15 @@ Check that `rewardClaimed_` != 0 before `safeTransfer`.
 [https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L348](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L348)
 
 https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/PositionManager.sol#L225 (`Transfer` event is also emitted)
+
+## [L-08] Stake position with 0 bucket cna be opened
+New stake position with valid tokenId and with 0 buckets (positionIndexes length is zero) can be opened in RewardsManager contract. For loop will be skipped and transfering of the nft will be successful. The contract will receive nft with zero bucket which is fully unusuable in the future.
+
+https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-core/src/RewardsManager.sol#L207
+
+## [L-09] proposeExtraordinary can revert is _extraordinaryFundingProposals has big length
+
+`math.wad - getMinimumThresholdPercentage() ` can [revert](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L105) if `_extraordinaryFundingProposals` has length around 191 and more. This will make function  `proposeExtraordinary` unusuable in the future.
+
+My recommendation is to have maximum limit of minimum threshold percentage. For example, if length of `_extraordinaryFundingProposals` is too big to return specifci defined constant for minimum threshold percentage
+[code](https://github.com/code-423n4/2023-05-ajna/blob/main/ajna-grants/src/grants/base/ExtraordinaryFunding.sol#L206-L215)
