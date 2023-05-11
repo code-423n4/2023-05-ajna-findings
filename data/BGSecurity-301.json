@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "BGSecurity",
+  "risk": "2",
+  "title": "Parameter change could lead to wrong calculations and unnecessary actions",
+  "issueId": 301,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/301"
+}
