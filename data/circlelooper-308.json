@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "circlelooper",
+  "risk": "2",
+  "title": "User should not be allowed to claim delegate rewards in challenge period",
+  "issueId": 308,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/308"
+}
