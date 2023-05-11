@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "patitonar",
+  "risk": "3",
+  "title": "User can lose all their rewards if the contract has not enough balance",
+  "issueId": 326,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/326"
+}
