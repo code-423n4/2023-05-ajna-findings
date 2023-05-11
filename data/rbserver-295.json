@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "`StandardFunding._getDelegateReward` function does not factor in votes used by user during screening stage for calculating user's delegate reward",
+  "issueId": 295,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/295"
+}
