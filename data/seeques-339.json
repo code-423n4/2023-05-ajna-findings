@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "seeques",
+  "risk": "3",
+  "title": "Loss of funds when calling `startNewDistributionPeriod()` before the challenge period ends",
+  "issueId": 339,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/339"
+}
