@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "shealtielanz",
+  "risk": "2",
+  "title": "Rewards may be claimed multiple times using the `moveStakedLiquidity()` function.",
+  "issueId": 316,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/316"
+}
