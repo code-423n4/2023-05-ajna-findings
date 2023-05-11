@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "francoHacker",
+  "risk": "2",
+  "title": "Use of transferFrom() rather than safeTransferFrom() for NFTs in will lead to the loss of NFTs The EIP-721 standard says the following about transferFrom():",
+  "issueId": 275,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/275"
+}
