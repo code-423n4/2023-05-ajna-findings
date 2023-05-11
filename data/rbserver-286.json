@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "User can call `StandardFunding.updateSlate` function to frontrun other user's `StandardFunding.updateSlate` transaction",
+  "issueId": 286,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/286"
+}
