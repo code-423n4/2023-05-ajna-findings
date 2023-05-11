@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "peanuts",
+  "risk": "2",
+  "title": "minThresholdPercentage in ExtraordinaryFunding will force proposals to fail because proposals will not meet the increased percentage requirement",
+  "issueId": 383,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/383"
+}
