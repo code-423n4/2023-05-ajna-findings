@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Koolex",
+  "risk": "2",
+  "title": "The lender won't be able to claim rewards in some cases and most of RewardsManager's methods (e.g. staking, unstaking ..etc) will revert.",
+  "issueId": 354,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/354"
+}
