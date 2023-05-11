@@ -1,4 +1,30 @@
-Low Risk Issues
+A. LOW/MEDIUM RISK: Large(r) loan based griefing attack:
+Although the protocol already protects against griefing attacks using dust loans, there is currently no protection in place for when larger loans are used to execute griefing attacks.
+
+Impact:
+An attacker could take out one or more large loans from depositors and keep the loan very close to the liquidation threshold, thereby artificially inflating the HTP. This potential griefing attack could disrupt the system by sustainably preventing other lenders from withdrawing their deposits.
+
+The absence of a mitigation mechanism for this variant of the attack is concerning because it could lead to the locking of users' funds within the system, undermining the protocol's credibility and causing a possible loss of users. Additionally, this attack could prevent lenders from correctly adjusting the Liquidity Utilization Price (LUP), thereby manipulating market dynamics.
+
+Proof of Concept:
+The griefing attack could be executed as follows:
+
+The attacker borrows a large amount from the system, choosing depositors who have a significant amount of funds.
+The attacker ensures that the loan size remains very close to the liquidation threshold, thereby artificially inflating the HTP.
+
+Recommended Mitigation Steps
+Consider implementing additional checks or limits on borrowing activities. For instance, a limit on the loan-to-value (LTV) ratio could be introduced to prevent borrowers from taking out loans that are too close to the liquidation threshold, preventing an attacker from artificially inflating the HTP.
+
+In addition, a mechanism could be implemented that adjusts the HTP calculation in response to large loans. This would reduce the impact that any single loan can have on the overall HTP.
+
+Monitoring for suspicious borrowing patterns could also be beneficial. Patterns such as a user borrowing large amounts close to the liquidation threshold could trigger manual reviews or automated responses to protect the system and its users.
+
+Lastly, a mechanism should be in place to handle situations where lenders cannot withdraw their deposits due to an artificially inflated HTP. This could include emergency withdrawal functions or a system to handle liquidations when the HTP is artificially high.
+
+These measures would help protect the system and its users from this type of griefing attack.
+
+
+B. Other Low Risk Issues:
 
 |     | Issue | Instances |
 | --- | ---   | --- |
