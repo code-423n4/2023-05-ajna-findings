@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0x73696d616f",
+  "risk": "3",
+  "title": "Users can grant an address and distribute rewards pro-rata, draining the treasury",
+  "issueId": 352,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/352"
+}
