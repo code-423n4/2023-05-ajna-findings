@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "0xTheC0der",
+  "risk": "3",
+  "title": "Position NFT can be spammed with insignificant positions by anyone until rewards DoS",
+  "issueId": 488,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/488"
+}
