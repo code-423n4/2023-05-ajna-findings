@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audit_Avengers",
+  "risk": "2",
+  "title": "stake() function: The provided stake function lacks checks to prevent a lender from staking multiple NFTs in the same Ajna pool. The function allows any owned position NFT to be staked without considering whether the lender has already staked in the pool. This potentially opens up the system to an abuse where a lender stakes multiple NFTs for the same liquidity position.",
+  "issueId": 470,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/470"
+}
