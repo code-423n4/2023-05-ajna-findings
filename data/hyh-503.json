@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hyh",
+  "risk": "3",
+  "title": "PositionManager's moveLiquidity can freeze funds by removing destination index even when the move was partial",
+  "issueId": 503,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/503"
+}
