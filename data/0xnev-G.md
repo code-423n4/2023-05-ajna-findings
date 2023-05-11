@@ -6,7 +6,7 @@
 | [G-04] | Implement `StandardFunding._setNewDistributionId()` in `StandardFunding.startNewDistributionPeriod()` directly | 1 | 3222 |
 | [G-05] | Use constant instead of immutable for `ajnaTokenAddress` in `Funding.sol` | 1 | 16919 |
 | [G-06] | `<x> += <y>` costs more gas than `<x> = <x> + <y>` for state variables | 3 | 339 |
-| [G-07] | RMultiple accesses of a mapping/array should use a local variable cache | 2 | 210 |
+| [G-07] | RMultiple accesses of a mapping/array should use a local variable cache | 5 | 210 |
 
 | Total Gas-Optimization Issues | 7 |
 |:--:|:--:|
