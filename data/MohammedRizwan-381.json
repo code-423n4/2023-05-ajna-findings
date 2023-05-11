@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "_execute( ) function can silently fail for non-existent contract address via .call ",
+  "issueId": 381,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/381"
+}
