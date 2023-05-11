@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "circlelooper",
+  "risk": "2",
+  "title": "Should not allow proposals with 0 funding votes being updated in slate",
+  "issueId": 321,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/321"
+}
