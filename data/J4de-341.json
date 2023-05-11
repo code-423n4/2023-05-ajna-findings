@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "J4de",
+  "risk": "3",
+  "title": "Anyone can steal  someone else's LP via `LPActions.sol#transferLP`",
+  "issueId": 341,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/341"
+}
