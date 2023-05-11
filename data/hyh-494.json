@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "hyh",
+  "risk": "3",
+  "title": "PositionManager's moveLiquidity can set wrong deposit time and permanently freeze LP funds moved",
+  "issueId": 494,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/494"
+}
