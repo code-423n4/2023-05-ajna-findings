@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "J4de",
+  "risk": "3",
+  "title": "`RewardsManager.sol` contract, if the `bucketExchangeRates` of an epoch is not updated, all users will lose the rewards of that epoch",
+  "issueId": 347,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/347"
+}
