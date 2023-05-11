@@ -1,0 +1,8 @@
+{
+  "contest": 234,
+  "handle": "Audit_Avengers",
+  "risk": "2",
+  "title": "mint() function: anyone can mint position NFTs without needing any Ajna pool deposits/collateral. Essentially equals \"empty\" NFTs that cannot be used to stake.",
+  "issueId": 459,
+  "issueUrl": "https://github.com/code-423n4/2023-05-ajna-findings/issues/459"
+}
